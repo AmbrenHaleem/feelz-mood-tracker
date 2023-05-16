@@ -22,10 +22,17 @@ Group 5
 - Use can add and setup their own reminder schedule with precise times of the day
 - Today's view will be the default screen when the app is open and will show a summary of entries posted for today.
 - Ability to input their mood, happy, sad, angry ... upon each reminder
+
+### Features to be completed by Ambreen Haleem
+
 - User can add a new mood type to be shown along with the default 10 moods
 - User can select a type of activity they were doing when they made their Feelz entry
 - User can add a new activity type that will show going forward in their list of activities
 - User can manually enter names of people they are with at the time of mood entry
+
+---
+
+
 - Users can pull from contact list to add as being with during a mood entry
 - Implement tags for activities, moods and people so that it is easier to visualize them for the user while it will make search functionality stronger with more reliable results
 - All user to enter and create their own tags as some moods or activities may overlap
