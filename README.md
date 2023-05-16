@@ -1,6 +1,6 @@
 # feelz-mood-tracker
 
-Source code for React app to track moods
+Feelz is a React Native application used to track a users moods/feelings so that they can better understand what makes them happy or unhappy. And make the adjustments needed to maintain optimal happiness.
 
 ---
 
@@ -57,7 +57,5 @@ Group 5
 - Calendar overview of users mood entries to get a idea of the bigger picture for the month
 - Show simple patterns of mood data. So if there is a constant mood being shown up at specific times of day or when with specific people or performing specific activities.
 - Health tracker to track things that will effect the users life in the long term So things like when they smoke, caffeine intake, alcohol exercise, sleep
-
---
 
 ---
