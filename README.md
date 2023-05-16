@@ -9,7 +9,9 @@ Group 5
 -Junying Liu  
 -Ambreen Haleem  
 -Krishna Priya  
--Jack Ivanisevic
+-Jack Ivanisevic  
+-Anita Gharti Chhetri
+
 
 ---
 
