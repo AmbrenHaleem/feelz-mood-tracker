@@ -4,7 +4,7 @@ Feelz is a React Native application used to track a users moods/feelings so that
 
 ---
 
-Group 5
+## Group 5
 
 -Junying Liu  
 -Ambreen Haleem  
