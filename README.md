@@ -12,20 +12,19 @@ Group 5
 -Jack Ivanisevic  
 -Anita Gharti Chhetri
 
-
 ---
 
 ## Features
 
-
 ### Features to be completed by Ambreen Haleem
 
 - User can add a new mood type to be shown along with the default 10 moods
-- User can select a type of activity they were doing when they made their   Feelz entry
+- User can select a type of activity they were doing when they made their Feelz entry
 - User can add a new activity type that will show going forward in their list of activities
 - User can manually enter names of people they are with at the time of mood entry
 
 ---
+
 ### Features to be completed by Krishna Priya
 
 - Users can pull from contact list to add as being with during a mood entry
@@ -33,7 +32,7 @@ Group 5
 - All user to enter and create their own tags as some moods or activities may overlap
 - Search feature so that the user can search the whole system to find specific moods, activities, tags, people
 
-----
+---
 
 ### Features to be completed by Anita Gharti Chhetri
 
@@ -53,10 +52,12 @@ Group 5
 
 ---
 
+### Features to be completed by Jack Ivanisevic
+
 - Calendar overview of users mood entries to get a idea of the bigger picture for the month
 - Show simple patterns of mood data. So if there is a constant mood being shown up at specific times of day or when with specific people or performing specific activities.
 - Health tracker to track things that will effect the users life in the long term So things like when they smoke, caffeine intake, alcohol exercise, sleep
 
-
+--
 
 ---
