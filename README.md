@@ -18,10 +18,6 @@ Group 5
 ## Features
 
 
-- User can select interval or reminders broken down to receive either 3, 4, 5 or 6 reminders during their waking hours.
-- Use can add and setup their own reminder schedule with precise times of the day
-- Today's view will be the default screen when the app is open and will show a summary of entries posted for today.
-
 ### Features to be completed by Ambreen Haleem
 
 - User can add a new mood type to be shown along with the default 10 moods
@@ -48,10 +44,19 @@ Group 5
 
 ---
 
+### Features to be completed by Junying Liu
+
+- User can select interval or reminders broken down to receive either 3, 4, 5 or 6 reminders during their waking hours.
+- Use can add and setup their own reminder schedule with precise times of the day
+- Today's view will be the default screen when the app is open and will show a summary of entries posted for today.
+- Lockdown screen. provide the user the abiality to "lock" the application so that if someone else were to gain access to their phone the data would remain unaccessible.
+
+---
+
 - Calendar overview of users mood entries to get a idea of the bigger picture for the month
 - Show simple patterns of mood data. So if there is a constant mood being shown up at specific times of day or when with specific people or performing specific activities.
 - Health tracker to track things that will effect the users life in the long term So things like when they smoke, caffeine intake, alcohol exercise, sleep
 
-- Lockdown screen. provide the user the abiality to "lock" the application so that if someone else were to gain access to their phone the data would remain unaccessible.
+
 
 ---
