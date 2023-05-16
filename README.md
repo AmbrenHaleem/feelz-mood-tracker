@@ -31,12 +31,14 @@ Group 5
 - User can manually enter names of people they are with at the time of mood entry
 
 ---
-
+##Features to be completed by Krishna Priya
 
 - Users can pull from contact list to add as being with during a mood entry
 - Implement tags for activities, moods and people so that it is easier to visualize them for the user while it will make search functionality stronger with more reliable results
 - All user to enter and create their own tags as some moods or activities may overlap
 - Search feature so that the user can search the whole system to find specific moods, activities, tags, people
+
+----
 - User preferences page that will allow users to change them form dark mode to light mode setup color preferences
 - Calendar overview of users mood entries to get a idea of the bigger picture for the month
 - Show simple patterns of mood data. So if there is a constant mood being shown up at specific times of day or when with specific people or performing specific activities.
