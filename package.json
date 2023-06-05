@@ -22,7 +22,9 @@
     "native": "^0.3.3",
     "react": "^18.2.0",
     "react-native": "^0.71.7",
+    "react-native-contacts": "^7.0.5",
     "react-native-dropdown-select-list": "^2.0.4",
+    "react-native-permissions": "^3.8.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
