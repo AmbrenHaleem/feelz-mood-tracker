@@ -6,12 +6,17 @@ import { SelectList } from 'react-native-dropdown-select-list';
 import { useNavigation } from '@react-navigation/native';
 import * as localDB from '../../database/localdb';
 
+
+
 export default function Form() {
+    let [err, setError] = useState();
     const navigation = useNavigation();
     const [selectedMood, setSelectedMood] = useState('');
     const [selectedActivity, setSelectedActivity] = useState('');
     const [activities, setActivities] = useState([]);
-
+    const [selectedContact, setSelectedContact] = useState('');
+    const [contactList, setContactList] = useState([]);
+    const [contacts, setContacts] = useState([]);
     const handleAddActivityButtonPress = () => {
         navigation.navigate('AddActivity')
     }
@@ -33,6 +38,7 @@ export default function Form() {
     //     {key:'3', value:'Sleep'},
     // ]
     useEffect(() => {
+        
         // initialize the database
         (async () => {
             try {
@@ -58,6 +64,43 @@ export default function Form() {
             }
         })();
     })
+    const fetchContacts = async () => {
+        try {
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
+            {
+              title: 'Contacts Permission',
+              message: 'This app needs access to your contacts.',
+            }
+          );
+    
+          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            Contacts.getAll((err, contactList) => {
+              if (err) {
+                console.log('Error fetching contacts:', err);
+              } else {
+                const formattedContacts = contactList.map((contact) => ({
+                  key: contact.recordID,
+                  value: contact.displayName,
+                }));
+                setContacts(formattedContacts);
+              }
+            });
+          } else {
+            console.log('Contacts permission denied');
+          }
+        } catch (error) {
+          console.log('Error requesting contacts permission:', error);
+        }
+      };
+
+
+      const handleFetchContactsButtonPress = () => {
+        fetchContacts();
+      };
+    
+
+    
 
     return (
         <ScrollView>
@@ -89,6 +132,19 @@ export default function Form() {
                         <Text style={styles.button.text}>+</Text>
                     </Pressable>
                 </View>
+                <View style={styles.selectlist.container}>
+                <View style={styles.selectlist.list} >
+                  <TextInput 
+                  style={styles.selectlist.textInput}
+                   placeholder= 'Select Contact'
+                   value={selectedContact}
+      onChangeText={setSelectedContact}
+      />
+                </View>
+                <Pressable style={styles.selectlist.button} onPress={handleFetchContactsButtonPress}>
+                    <Text style={styles.button.text}>+</Text>
+                </Pressable>
+            </View>
 
                 <Text style={styles.label}>Description:</Text>
                 <TextInput

@@ -52,6 +52,13 @@ const styles = StyleSheet.create({
         padding: 10,
         alignSelf: 'flex-start',
         marginTop : 2
+    },
+     //contact style
+     textInput:{
+      flex: 3,
+      fontSize: 15,
+      fontWeight: 'bold',
+      marginLeft:10
     }
   },
   multilineTextbox:{
