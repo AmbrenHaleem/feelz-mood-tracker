@@ -6,14 +6,15 @@ import { SelectList } from 'react-native-dropdown-select-list';
 import { useNavigation } from '@react-navigation/native';
 import * as localDB from '../../database/localdb';
 
-
-
 export default function Form() {
     let [err, setError] = useState();
     const navigation = useNavigation();
     const [selectedMood, setSelectedMood] = useState('');
+    const [moodTypes, setMoodTypes] = useState([]);
+    
     const [selectedActivity, setSelectedActivity] = useState('');
     const [activities, setActivities] = useState([]);
+    
     const [selectedContact, setSelectedContact] = useState('');
     const [contactList, setContactList] = useState([]);
     const [contacts, setContacts] = useState([]);
@@ -47,10 +48,10 @@ export default function Form() {
                 //await localDB.removeAll();
                 //console.log('DB Success!');
 
-                // load from the local db
-                const data = await localDB.read();
+                // load activities from the local db
+                const activitiesData = await localDB.readActivities();
 
-                let activityData = data.map((item) => {
+                let activityData = activitiesData.map((item) => {
                     return {
                         key: item.id,
                         value: item.activity
@@ -58,12 +59,23 @@ export default function Form() {
                 });
                 setActivities(activityData);
                 //console.log('Added Data:',activityData);
+                 // load activities from the local db
+                 const moodTypesData = await localDB.readMoodType();
+
+                 let moodTypeData = moodTypesData.map((item) => {
+                     return {
+                         key: item.id,
+                         value: item.moodType
+                     }
+                 });
+                 setMoodTypes(moodTypeData);
+                 //console.log('Added Data:',activityData);
             }
             catch (error) {
                 console.log('DB Error:', error);
             }
         })();
-    })
+    },[])
     const fetchContacts = async () => {
         try {
           const granted = await PermissionsAndroid.request(
@@ -99,9 +111,6 @@ export default function Form() {
         fetchContacts();
       };
     
-
-    
-
     return (
         <ScrollView>
             <View style={styles.container}>
@@ -111,8 +120,9 @@ export default function Form() {
                     <View style={styles.selectlist.list} >
                         <SelectList placeholder='Select Mood'
                             setSelected={(val) => setSelectedMood(val)}
-                            data={moodData}
+                            data={moodTypes}
                             save="value"
+                            maxHeight = '120'
                         />
                     </View>
                     <Pressable style={styles.selectlist.button} onPress={handleAddMoodTypeButtonPress}>
@@ -126,6 +136,7 @@ export default function Form() {
                             setSelected={(val) => setSelectedActivity(val)}
                             data={activities}
                             save="value"
+                            maxHeight = '120'
                         />
                     </View>
                     <Pressable style={styles.selectlist.button} onPress={handleAddActivityButtonPress}>
@@ -135,23 +146,24 @@ export default function Form() {
                 <View style={styles.selectlist.container}>
                 <View style={styles.selectlist.list} >
                   <TextInput 
-                  style={styles.selectlist.textInput}
-                   placeholder= 'Select Contact'
-                   value={selectedContact}
-      onChangeText={setSelectedContact}
-      />
+                    style={styles.multilineTextbox}
+                    placeholder= 'Select Contact'
+                    value={selectedContact}
+                    onChangeText={setSelectedContact}
+                  />
                 </View>
                 <Pressable style={styles.selectlist.button} onPress={handleFetchContactsButtonPress}>
                     <Text style={styles.button.text}>+</Text>
                 </Pressable>
             </View>
 
-                <Text style={styles.label}>Description:</Text>
+                {/* <Text style={styles.label}>Description:</Text> */}
                 <TextInput
                     maxLength={150}
-                    style={styles.multilineTextbox}
-                    multiline numberOfLines={4}
-                    placeholder='Enter Contact Details'
+                    style={styles.detailTextbox}
+                    numberOfLines={4}
+                    placeholder='Enter Details'
+                    multiline
                 />
                 <Pressable style={styles.button.container} onPress={handleAddMoodButtonPress}>
                     <Text style={styles.button.text}>Add Mood</Text>

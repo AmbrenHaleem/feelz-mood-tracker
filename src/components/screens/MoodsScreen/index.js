@@ -14,12 +14,12 @@ export default function MoodsScreen({navigation}) {
         )}
        
         </Stack.Screen>
-      <Stack.Screen name="AddMoodType" options={{ title: 'Add a new Mood Type'}} >
+      <Stack.Screen name="AddMoodType" options={{ title: 'Add a New Mood Type'}} >
         {(props) => (
             <AddMoodType {...props} />
         )}
         </Stack.Screen>
-      <Stack.Screen name="AddActivity" options={{ title: 'Add a new Activity' }} >
+      <Stack.Screen name="AddActivity" options={{ title: 'Add a New Activity' }} >
         {(props) => (
             <AddActivity {...props} />
         )}

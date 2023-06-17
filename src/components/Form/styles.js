@@ -1,13 +1,13 @@
 import { StyleSheet } from 'react-native';
-import { primaryColor } from '../../includes/variable';
+import { primaryColor, secondaryColor } from '../../includes/variable';
 
 const styles = StyleSheet.create({
   container: {
     alignSelf: 'stretch',
-    padding: 20
+    padding: 20,
+    backgroundColor: '#f2f2f2'
   },
   dateTimeLabel: {
-    color: '#777',
     fontSize: 26,
     color:primaryColor,
     textAlign:'center',
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     paddingBottom: 5
   },
   textbox: {
-    backgroundColor: '#fff',
+    backgroundColor: '#f2f2f2',
     borderWidth: 1,
     borderColor: '#bcbcbc',
     paddingVertical: 7,
@@ -29,8 +29,6 @@ const styles = StyleSheet.create({
   },
   selectlist:{
     container:{
-       // flex:1,
-       // justifyContent:'center',
         flexDirection:'row',
         alignSelf: 'stretch',
         paddingBottom: 20,
@@ -38,7 +36,7 @@ const styles = StyleSheet.create({
     },
     list:{
         flex:8,
-        backgroundColor: '#fff',
+        backgroundColor: '#f2f2f2',
         borderRadius: 10,
     },
     button:{
@@ -62,9 +60,9 @@ const styles = StyleSheet.create({
     }
   },
   multilineTextbox:{
-    backgroundColor: '#fff',
+    backgroundColor: '#f2f2f2',
     borderWidth: 1,
-    borderColor: '#bcbcbc',
+    borderColor: '#747474',
     paddingVertical: 7,
     paddingHorizontal: 14,
     fontSize: 16,
@@ -72,6 +70,16 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlignVertical:'top'
   },
+  detailTextbox:{
+    borderWidth: 1,
+    borderColor: '#747474',
+    paddingTop: 9,
+    paddingHorizontal: 14,
+    fontSize: 16,
+    borderRadius: 10,
+    flex: 1,
+    height:80,
+    textAlignVertical:'top'},
   button: {
     container: {
       alignItems: 'center',
@@ -93,7 +101,7 @@ const styles = StyleSheet.create({
   },
   errorMessage: {
     container: {
-      backgroundColor: '#fff',
+      backgroundColor: '#f2f2f2',
       padding: 10,
       marginBottom: 30,
       borderColor: '#c00',

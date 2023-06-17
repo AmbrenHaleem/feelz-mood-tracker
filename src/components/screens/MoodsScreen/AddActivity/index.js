@@ -1,5 +1,5 @@
 import { Text, View, TextInput, Pressable, ScrollView, ActivityIndicator, Keyboard } from 'react-native';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from './styles';
 import { primaryColor } from '../../../../includes/variable';
 import * as localDB from '../../../../database/localdb'
@@ -51,8 +51,8 @@ export default function AddActivity({ navigation }) {
 
                 setSavingData(true);
                 console.log("Activity going to add ", data.activity);
-                const newActivityEntry = await localDB.add(data.activity);
-                console.log('New added activity: ', newActivityEntry);
+                const newActivityEntry = await localDB.addActivity(data.activity);
+                //console.log('New added activity: ', newActivityEntry);
                 setSavingData(false);
                 const newActivities = [
                     newActivityEntry,
@@ -99,10 +99,11 @@ export default function AddActivity({ navigation }) {
                     </View>
                 )}
                 <View style={styles.container}>
-                    <Text style={styles.label}>Activity:</Text>
+                    {/* <Text style={styles.label}>Activity:</Text> */}
                     <TextInput
                         maxLength={150}
                         onChangeText={handleActivityChange}
+                        placeholder='Enter activity'
                         defaultValue={activity}
                         style={styles.textbox}
                     />

@@ -1,11 +1,14 @@
-import { Text, View, TextInput, Pressable, ScrollView, ActivityIndicator } from 'react-native';
+import { Text, View, TextInput, Pressable, ScrollView, ActivityIndicator, Keyboard  } from 'react-native';
 import { useState } from 'react';
 import styles from './styles';
 import { primaryColor } from '../../../../includes/variable';
+import * as localDB from '../../../../database/localdb'
+
 export default function AddMoodType({ navigation }) {
   const [moodType, setMoodType] = useState('');
   const [errorMessages, setErrorMessages] = useState([]);
   const [savingDate, setSavingData] = useState(false);
+  const [MoodTypes, setMoodTypes] = useState([]);
 
   const handleMoodTypeChange = (value) => {
     setMoodType(value);
@@ -26,20 +29,25 @@ export default function AddMoodType({ navigation }) {
 
         const data = {
           moodType: moodType,
-        }
-        //console.log("Add data : ", data);
-        setSavingData(true);
-        const id = await database.save(data);
-        setSavingData(false);
+      }
 
-        if (id) {
-          //  props.onAddItem(id, itemDescription, itemQuantity,itemCost,purchaseDate,expiryDate);
-
-          setMoodType('');
-          setErrorMessages([]);
-          Keyboard.dismiss();
-          // props.navigation.goBack();
-        }
+          setSavingData(true);
+          console.log("Mood Type going to add ", data.moodType);
+          const newMoodTypeEntry = await localDB.addMoodType(data.moodType);
+          //console.log('New added MoodType: ', newMoodTypeEntry);
+          setSavingData(false);
+          const newMoodTypes = [
+              newMoodTypeEntry,
+              ...MoodTypes
+          ]
+          setMoodTypes(newMoodTypes);
+          if (newMoodTypeEntry) {
+             
+              setMoodType('');
+              setErrorMessages([]);
+              Keyboard.dismiss();
+              // props.navigation.goBack();
+          }
       }
     }
     catch (err) {
@@ -72,11 +80,12 @@ export default function AddMoodType({ navigation }) {
           </View>
         )}
         <View style={styles.container}>
-          <Text style={styles.label}>Mood Type:</Text>
+          {/* <Text style={styles.label}>Mood Type:</Text> */}
           <TextInput
             maxLength={150}
             onChangeText={handleMoodTypeChange}
             defaultValue={moodType}
+            placeholder='Enter Mood Type'
             style={styles.textbox}
           />
           <Pressable style={styles.button.container} onPress={handleAddPress} >

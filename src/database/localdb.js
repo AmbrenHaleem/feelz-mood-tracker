@@ -21,35 +21,69 @@ export function init() {
                     //console.log('Activities table created',result);
                     resolve(true);
                 },
-                // (tx, result) => {
-                //     console.log('SQL Success:', result);
-                // },
-
+                
                 (tx, error) => {
                     console.log('SQL Error:', error.message);
                     reject(error);
                 }
             );
             // console.log('Transaction:',tx);
+            tx.executeSql(
+                `CREATE TABLE IF NOT EXISTS MoodType (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    moodType TEXT NOT NULL
+                    )
+                    `,
+                [],
+                (tx, result) => {
+                    //console.log('Activities table created',result);
+                    resolve(true);
+                },
+                
+                (tx, error) => {
+                    console.log('SQL Error:', error.message);
+                    reject(error);
+                }
+            );
+            // console.log('Transaction:',tx);
+            tx.executeSql(
+                `CREATE TABLE IF NOT EXISTS Mood (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    activityType TEXT NOT NULL
+                    moodType TEXT NOT NULL
+                    )
+                    `,
+                [],
+                (tx, result) => {
+                    //console.log('Activities table created',result);
+                    resolve(true);
+                },
+                
+                (tx, error) => {
+                    console.log('SQL Error:', error.message);
+                    reject(error);
+                }
+            );
         },
 
         (error) => {
             console.log('Tx Error:',error.message);
         },
         () => { 
-            console.log('Tx Success');
+           // console.log('Tx Success');
         }
     );
 });
 }
 
-export function destroy(){
+export function destroy(tableName){
     return new Promise((resolve, reject) => {
         const database = SQLite.open();
         database.transaction(
             (tx) => {
                 tx.executeSql(
-                'DROP TABLE IF EXISTS Activities',
+               // 'DROP TABLE IF EXISTS Activities',
+               `DROP TABLE IF EXISTS ${tableName}`,
                 [],
                 (tx,result) => {
                     resolve(true);
@@ -66,7 +100,64 @@ export function destroy(){
     });
 }
 
-export function read() {
+export function remove(id, tableName) {
+    return new Promise((resolve, reject) => {
+        const database = open();
+        database.transaction(
+            (tx) => {
+                tx.executeSql(
+                    `
+                    DELETE FROM ${tableName}
+                    WHERE id = ?
+                    `,
+                    [id],
+                    (tx, result) => {
+                        console.log('Delete', result);
+                        resolve();
+                    },
+                    (tx, error) => {
+                        reject(error);
+                    }
+                );
+            },
+            (error) => {
+                reject(error);
+            }
+        );
+    })
+}
+
+export function removeAll(tableName) {
+    return new Promise((resolve, reject) => {
+        const database = open();
+        database.transaction(
+            (tx) => {
+                tx.executeSql(
+                    `
+                    DELETE FROM ${tableName}
+                    `,
+                    [],
+                    (tx, result) => {
+                        console.log('Delete', result);
+                        resolve();
+                    },
+                    (tx, error) => {
+                        reject(error);
+                    }
+                );
+            },
+            (error) => {
+                reject(error);
+            }
+        );
+    })
+}
+
+/**
+ * Methods to read, add and update Activity
+ */
+
+export function readActivities() {
     return new Promise((resolve, reject) => {
         const database = open();
         database.transaction(
@@ -100,7 +191,7 @@ export function read() {
     });
 }
 
-export function add(activity) {
+export function addActivity(activity) {
     return new Promise((resolve, reject) => {
         const database = open();
         console.log('Database opened', database);
@@ -114,27 +205,27 @@ export function add(activity) {
                     `,
                     [activity],
                     (tx, result) => {
-                        console.log('Data Added', result);
+                        // console.log('Data Added', result);
                         const newActivityEntry = {
                             activity: activity
                         };
                         resolve(newActivityEntry);
                     },
                     (tx, error) => {
-                        console.log('Failed to add data', error.message);
+                        //console.log('Failed to add data', error.message);
                         reject(error);
                     }
                 );
             },
             (error) => {
-                console.log('Failed to add data', error.message);
+                //console.log('Failed to add data', error.message);
                 reject(error);
             }
         );
     });
 }
 
-export function update(id, activity) {
+export function updateActivity(id, activity) {
     return new Promise((resolve, reject) => {
         const database = open();
         database.transaction(
@@ -161,45 +252,92 @@ export function update(id, activity) {
     });
 }
 
-export function remove(id) {
-    return new Promise((resolve, reject) => {
-        const database = open();
-        database.transaction(
-            (tx) => {
-                tx.executeSql(
-                    `
-                    DELETE FROM Activities
-                    WHERE id = ?
-                    `,
-                    [id],
-                    (tx, result) => {
-                        console.log('Delete', result);
-                        resolve();
-                    },
-                    (tx, error) => {
-                        reject(error);
-                    }
-                );
-            },
-            (error) => {
-                reject(error);
-            }
-        );
-    })
-}
+/**
+ * Methods to read, add and update Mood Type
+ */
 
-export function removeAll() {
+
+export function readMoodType() {
     return new Promise((resolve, reject) => {
         const database = open();
         database.transaction(
             (tx) => {
                 tx.executeSql(
-                    `
-                    DELETE FROM Activities
-                    `,
+                    'SELECT * FROM MoodType',
                     [],
                     (tx, result) => {
-                        console.log('Delete', result);
+                        const moodTypes = [];
+                        //console.log('Read:', result);
+                        result.rows._array.forEach(row => {
+                            const moodType = {
+                                id: row.id,
+                                moodType : row.moodType
+                            }
+                            moodTypes.push(moodType);
+                            //console.log('Activity:',activity);
+                        });
+
+                        resolve(moodTypes);
+                    },
+                    (tx, error) => {
+                        reject(error);
+                    }
+                );
+            },
+            (error) => {
+                reject(error);
+            }
+        );
+    });
+}
+
+export function addMoodType(moodType) {
+    return new Promise((resolve, reject) => {
+        const database = open();
+        console.log('Database opened', database);
+        database.transaction(
+            (tx) => {
+                console.log('Database opened and now in transaction', database);
+                tx.executeSql(
+                    `
+                    INSERT INTO MoodType (moodType)
+                    VALUES (?)
+                    `,
+                    [moodType],
+                    (tx, result) => {
+                        // console.log('Data Added', result);
+                        const newMoodTypeEntry = {
+                            moodType: moodType
+                        };
+                        resolve(newMoodTypeEntry);
+                    },
+                    (tx, error) => {
+                        //console.log('Failed to add data', error.message);
+                        reject(error);
+                    }
+                );
+            },
+            (error) => {
+                //console.log('Failed to add data', error.message);
+                reject(error);
+            }
+        );
+    });
+}
+
+export function updateMoodType(id, moodType) {
+    return new Promise((resolve, reject) => {
+        const database = open();
+        database.transaction(
+            (tx) => {
+                tx.executeSql(
+                    `
+                    UPDATE MoodType
+                    SET moodType = ?
+                    WHERE id = ?;
+                    `,
+                    [moodType,id],
+                    (tx, result) => {
                         resolve();
                     },
                     (tx, error) => {
@@ -211,5 +349,104 @@ export function removeAll() {
                 reject(error);
             }
         );
-    })
+    });
+}
+
+/**
+ * Methods to read, add and update Mood 
+ */
+
+export function readMood() {
+    return new Promise((resolve, reject) => {
+        const database = open();
+        database.transaction(
+            (tx) => {
+                tx.executeSql(
+                    'SELECT * FROM Mood',
+                    [],
+                    (tx, result) => {
+                        const moods = [];
+                        //console.log('Read:', result);
+                        result.rows._array.forEach(row => {
+                            const mood = {
+                                id: row.id,
+                                mood : row.mood
+                            }
+                            moods.push(mood);
+                            //console.log('Activity:',activity);
+                        });
+
+                        resolve(moods);
+                    },
+                    (tx, error) => {
+                        reject(error);
+                    }
+                );
+            },
+            (error) => {
+                reject(error);
+            }
+        );
+    });
+}
+
+export function addMood(mood, activity) {
+    return new Promise((resolve, reject) => {
+        const database = open();
+        console.log('Database opened', database);
+        database.transaction(
+            (tx) => {
+                console.log('Database opened and now in transaction', database);
+                tx.executeSql(
+                    `
+                    INSERT INTO Mood (mood, activity)
+                    VALUES (?,?)
+                    `,
+                    [mood,activity],
+                    (tx, result) => {
+                        // console.log('Data Added', result);
+                        const newMoodEntry = {
+                            mood: mood
+                        };
+                        resolve(newMoodEntry);
+                    },
+                    (tx, error) => {
+                        //console.log('Failed to add data', error.message);
+                        reject(error);
+                    }
+                );
+            },
+            (error) => {
+                //console.log('Failed to add data', error.message);
+                reject(error);
+            }
+        );
+    });
+}
+
+export function updateMood(id, mood, activity) {
+    return new Promise((resolve, reject) => {
+        const database = open();
+        database.transaction(
+            (tx) => {
+                tx.executeSql(
+                    `
+                    UPDATE Mood
+                    SET mood = ?, activity = ?
+                    WHERE id = ?;
+                    `,
+                    [mood, activity, id],
+                    (tx, result) => {
+                        resolve();
+                    },
+                    (tx, error) => {
+                        reject(error);
+                    }
+                );
+            },
+            (error) => {
+                reject(error);
+            }
+        );
+    });
 }
