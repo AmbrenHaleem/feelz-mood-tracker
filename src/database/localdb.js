@@ -49,8 +49,11 @@ export function init() {
             tx.executeSql(
                 `CREATE TABLE IF NOT EXISTS Mood (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    activityType TEXT NOT NULL
-                    moodType TEXT NOT NULL
+                    mood TEXT NOT NULL,
+                    activity TEXT NOT NULL,
+                    contact TEXT NOT NULL,
+                    detail TEXT NOT NULL,
+                    moodDatetime TEXT NOT NULL
                     )
                     `,
                 [],
@@ -82,8 +85,8 @@ export function destroy(tableName){
         database.transaction(
             (tx) => {
                 tx.executeSql(
-               // 'DROP TABLE IF EXISTS Activities',
-               `DROP TABLE IF EXISTS ${tableName}`,
+                //'DROP TABLE IF EXISTS Activities',
+                `DROP TABLE IF EXISTS ${tableName};`,
                 [],
                 (tx,result) => {
                     resolve(true);
@@ -256,7 +259,6 @@ export function updateActivity(id, activity) {
  * Methods to read, add and update Mood Type
  */
 
-
 export function readMoodType() {
     return new Promise((resolve, reject) => {
         const database = open();
@@ -370,7 +372,11 @@ export function readMood() {
                         result.rows._array.forEach(row => {
                             const mood = {
                                 id: row.id,
-                                mood : row.mood
+                                mood : row.mood,
+                                activity: row.activity,
+                                contact: row.contact,
+                                detail: row.detail,
+                                moodDatetime: row.moodDatetime
                             }
                             moods.push(mood);
                             //console.log('Activity:',activity);
@@ -390,7 +396,7 @@ export function readMood() {
     });
 }
 
-export function addMood(mood, activity) {
+export function addMood(mood, activity, contact, detail, moodDatetime) {
     return new Promise((resolve, reject) => {
         const database = open();
         console.log('Database opened', database);
@@ -399,14 +405,18 @@ export function addMood(mood, activity) {
                 console.log('Database opened and now in transaction', database);
                 tx.executeSql(
                     `
-                    INSERT INTO Mood (mood, activity)
-                    VALUES (?,?)
+                    INSERT INTO Mood (mood, activity, contact, detail, moodDatetime)
+                    VALUES (?,?,?,?,?)
                     `,
-                    [mood,activity],
+                    [mood, activity, contact, detail, moodDatetime ],
                     (tx, result) => {
                         // console.log('Data Added', result);
                         const newMoodEntry = {
-                            mood: mood
+                            mood: mood,
+                            activity: activity,
+                            contact: contact,
+                            detail: detail,
+                            moodDatetime: moodDatetime
                         };
                         resolve(newMoodEntry);
                     },
@@ -432,7 +442,7 @@ export function updateMood(id, mood, activity) {
                 tx.executeSql(
                     `
                     UPDATE Mood
-                    SET mood = ?, activity = ?
+                    SET mood = ?, activity = ?, contact = ?, detail = ?, moodDatetime = ?
                     WHERE id = ?;
                     `,
                     [mood, activity, id],

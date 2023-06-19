@@ -3,12 +3,16 @@ import { useState } from 'react';
 import styles from './styles';
 import { primaryColor } from '../../../../includes/variable';
 import * as localDB from '../../../../database/localdb'
+import { useDispatch, useSelector } from 'react-redux';
+import { addActivity } from '../../../../redux/activitySlice';
 
 export default function AddActivity({ navigation }) {
     const [activity, setActivity] = useState('');
     const [errorMessages, setErrorMessages] = useState([]);
     const [savingDate, setSavingData] = useState(false);
-    const [Activities, setActivities] = useState([]);
+    const [activities, setActivities] = useState([]);
+
+    const dispatch = useDispatch();
 
     // useEffect(() => {
     //     // initialize the database
@@ -28,6 +32,11 @@ export default function AddActivity({ navigation }) {
     //     })();
     // }, []);
 
+    const activityData = useSelector(
+        (state) => {
+            return state.activity.activities;
+        });
+   
     const handleActivityChange = (value) => {
         setActivity(value);
     }
@@ -40,6 +49,12 @@ export default function AddActivity({ navigation }) {
             if (activity === '') {
                 validate.push('Activity is required.');
             }
+
+            activityData.map((item) => {
+                if (activity.toLowerCase().trim() === item.activity.toLowerCase().trim()) {
+                    validate.push('Activity already exist.');
+                }
+            });
             if (validate.length > 0) {
                 setErrorMessages(validate);
             }
@@ -50,15 +65,18 @@ export default function AddActivity({ navigation }) {
                 }
 
                 setSavingData(true);
-                console.log("Activity going to add ", data.activity);
+                //console.log("Activity going to add ", data.activity);
                 const newActivityEntry = await localDB.addActivity(data.activity);
                 //console.log('New added activity: ', newActivityEntry);
                 setSavingData(false);
                 const newActivities = [
                     newActivityEntry,
-                    ...Activities
+                    ...activities
                 ]
                 setActivities(newActivities);
+
+                dispatch(addActivity(newActivityEntry));
+
                 if (newActivityEntry) {
                     //  props.onAddItem(id, itemDescription, itemQuantity,itemCost,purchaseDate,expiryDate);
 
@@ -74,15 +92,15 @@ export default function AddActivity({ navigation }) {
         }
     }
 
-    if (savingDate) {
-        return (
-            <View style={styles.loadingContainer}>
-                <ActivityIndicator size='large' color={primaryColor} />
-                <Text style={styles.loadingText}> Saving data!</Text>
-                <Text style={styles.loadingText}> Please, wait...</Text>
-            </View>
-        );
-    }
+    // if (savingDate) {
+    //     return (
+    //         <View style={styles.loadingContainer}>
+    //             <ActivityIndicator size='large' color={primaryColor} />
+    //             <Text style={styles.loadingText}> Saving data!</Text>
+    //             <Text style={styles.loadingText}> Please, wait...</Text>
+    //         </View>
+    //     );
+    // }
     return (
         <ScrollView>
             <View style={styles.container}>

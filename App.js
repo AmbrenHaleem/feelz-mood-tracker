@@ -16,6 +16,9 @@ import { MaterialIcons } from '@expo/vector-icons';
 import Header from './src/components/Header';
 import HomeScreen from './src/components/screens/HomeScreen/index.js';
 
+import { Provider } from 'react-redux';
+import { store } from './src/redux/store.js';
+
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync()
 .then((prevented) => {
@@ -44,6 +47,7 @@ export default function App() {
 
   const [moods,setMoods] = useState([]);
   return (
+    <Provider store={store}>
     <NavigationContainer>
       <View style={styles.containter}>
         <StatusBar style='auto' />
@@ -101,6 +105,6 @@ export default function App() {
 
       </View>
     </NavigationContainer>
-    
+    </Provider>
   );
 }
