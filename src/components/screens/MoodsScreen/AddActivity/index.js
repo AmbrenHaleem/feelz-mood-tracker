@@ -1,4 +1,4 @@
-import { Text, View, TextInput, Pressable, ScrollView, ActivityIndicator, Keyboard } from 'react-native';
+import { Text, View, TextInput, Pressable, ScrollView, ActivityIndicator, Keyboard, Alert } from 'react-native';
 import { useState } from 'react';
 import styles from './styles';
 import { primaryColor } from '../../../../includes/variable';
@@ -68,6 +68,7 @@ export default function AddActivity({ navigation }) {
                 //console.log("Activity going to add ", data.activity);
                 const newActivityEntry = await localDB.addActivity(data.activity);
                 //console.log('New added activity: ', newActivityEntry);
+               
                 setSavingData(false);
                 const newActivities = [
                     newActivityEntry,
@@ -79,7 +80,7 @@ export default function AddActivity({ navigation }) {
 
                 if (newActivityEntry) {
                     //  props.onAddItem(id, itemDescription, itemQuantity,itemCost,purchaseDate,expiryDate);
-
+                    Alert.alert("Activity added successfully.");
                     setActivity('');
                     setErrorMessages([]);
                     Keyboard.dismiss();

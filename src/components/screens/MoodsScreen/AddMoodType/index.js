@@ -1,4 +1,4 @@
-import { Text, View, TextInput, Pressable, ScrollView, ActivityIndicator, Keyboard  } from 'react-native';
+import { Text, View, TextInput, Pressable, ScrollView, ActivityIndicator, Keyboard, Alert } from 'react-native';
 import { useState } from 'react';
 import styles from './styles';
 import { primaryColor } from '../../../../includes/variable';
@@ -49,6 +49,7 @@ export default function AddMoodType({ navigation }) {
           console.log("Mood Type going to add ", data.moodType);
           const newMoodTypeEntry = await localDB.addMoodType(data.moodType);
           //console.log('New added MoodType: ', newMoodTypeEntry);
+          
           setSavingData(false);
           const newMoodTypes = [
               newMoodTypeEntry,
@@ -59,7 +60,7 @@ export default function AddMoodType({ navigation }) {
           dispatch(addMoodType(newMoodTypeEntry));
 
           if (newMoodTypeEntry) {
-             
+              Alert.alert("Mood Type added successfully.");
               setMoodType('');
               setErrorMessages([]);
               Keyboard.dismiss();

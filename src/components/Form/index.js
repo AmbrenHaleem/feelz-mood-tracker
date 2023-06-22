@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, Text, TextInput, Keyboard, Pressable, ActivityIndicator, ScrollView } from 'react-native';
+import { View, Text, TextInput, Keyboard, Pressable, ActivityIndicator,TouchableOpacity, ScrollView,Alert, Button } from 'react-native';
 import styles from './styles';
 import { primaryColor } from '../../includes/variable';
 import { SelectList } from 'react-native-dropdown-select-list';
@@ -23,7 +23,6 @@ export default function Form() {
     
     const [selectedContact, setSelectedContact] = useState('');
     const [contactList, setContactList] = useState([]);
-    const [contacts, setContacts] = useState([]);
 
     const [errorMessages, setErrorMessages] = useState([]);
     const [detail, setDetail] = useState('');
@@ -70,6 +69,14 @@ export default function Form() {
     const handleAddMoodTypeButtonPress = () => {
         navigation.navigate('AddMoodType')
     }
+    const handleClearButtonPress = () => {
+        setMoodTypes([]);
+        setActivities([]);
+        setContactList([]);
+        setDetail('')
+        setErrorMessages([]);
+    }
+    
     const handleAddMoodButtonPress = async () => {
         try {
             const validate = [];
@@ -87,11 +94,6 @@ export default function Form() {
             if (detail === '') {
                 validate.push('Detail is required.');
             }
-            // activityData.map((item) => {
-            //     if (activity.toLowerCase().trim() === item.activity.toLowerCase().trim()) {
-            //         validate.push('Activity already exist.');
-            //     }
-            // });
             if (validate.length > 0) {
                 setErrorMessages(validate);
             }
@@ -106,9 +108,7 @@ export default function Form() {
                 }
 
                 setSavingData(true);
-                //console.log("Activity going to add ", data.activity);
                 const newMoodEntry = await localDB.addMood(data.mood,data.activity,data.contact,data.detail,data.moodDatetime);
-                //console.log('New added activity: ', newActivityEntry);
                 setSavingData(false);
                 const newMoods = [
                     newMoodEntry,
@@ -119,10 +119,11 @@ export default function Form() {
                 dispatch(addMood(newMoodEntry));
 
                 if (newMoodEntry) {
-                    //  props.onAddItem(id, itemDescription, itemQuantity,itemCost,purchaseDate,expiryDate);
-                    setSelectedMood('');
-                    setSelectedActivity('');
-                    setSelectedContact('');
+                    Alert.alert("Mood added successfully.");
+                   
+                    setMoodTypes([]);
+                    setActivities([]);
+                    setContactList([]);
                     setDetail('')
                     setErrorMessages([]);
                     Keyboard.dismiss();
@@ -145,12 +146,7 @@ export default function Form() {
     //     {key:'2', value:'Read'},
     //     {key:'3', value:'Sleep'},
     // ]
-    // const activityData = useSelector(
-    //     (state) => { 
-    //       return state.activity.activities;
-    // })
-    // console.log("Activity data : ", activityData);
-    // setActivities(activityData);
+   
     useEffect(() => {
         
         // initialize the database
@@ -171,25 +167,14 @@ export default function Form() {
                 dispatch(clearActivity());
                 let activityData = activitiesData.map((item) => {
                     dispatch(addActivity(item));
-                    // return {
-                    //     key: item.id,
-                    //     value: item.activity
-                    // }
                 });
-                //setActivities(activityData);
-                //console.log('Added Data:',activityData);
+               
                  // load activities from the local db
                  const moodTypesData = await localDB.readMoodType();
                  dispatch(clearMoodType());
                  let moodTypeData = moodTypesData.map((item) => {
                     dispatch(addMoodType(item));
-                    //  return {
-                    //      key: item.id,
-                    //      value: item.moodType
-                    //  }
                  });
-                 //setMoodTypes(moodTypeData);
-                 //console.log('Added Data:',activityData);
             }
             catch (error) {
                 console.log('DB Error:', error);
@@ -204,9 +189,6 @@ export default function Form() {
               });
       
               if (data.length > 0) {
-                //const contact = data[0];
-                //console.log("Contact Data : ",contact.name);
-                //setContactList(data);
                 const contacts = data.map((item) => {
                    return { 
                         key : item.id,
@@ -218,41 +200,7 @@ export default function Form() {
             }
           })();
     },[])
-    // const fetchContacts = async () => {
-    //     try {
-    //       const granted = await PermissionsAndroid.request(
-    //         PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
-    //         {
-    //           title: 'Contacts Permission',
-    //           message: 'This app needs access to your contacts.',
-    //         }
-    //       );
-    
-    //       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-    //         Contacts.getAll((err, contactList) => {
-    //           if (err) {
-    //             console.log('Error fetching contacts:', err);
-    //           } else {
-    //             const formattedContacts = contactList.map((contact) => ({
-    //               key: contact.recordID,
-    //               value: contact.displayName,
-    //             }));
-    //             setContacts(formattedContacts);
-    //           }
-    //         });
-    //       } else {
-    //         console.log('Contacts permission denied');
-    //       }
-    //     } catch (error) {
-    //       console.log('Error requesting contacts permission:', error);
-    //     }
-    //   };
 
-
-    //   const handleFetchContactsButtonPress = () => {
-    //     fetchContacts();
-    //   };
-    
     const activityData = useSelector(
     (state) => { 
         return state.activity.activities;
@@ -323,12 +271,9 @@ export default function Form() {
                             setSelected={(val) => setSelectedContact(val)}
                             data={contactList}
                             save="value"
-                            maxHeight = '120'
+                            maxHeight = '120'   
                     />
                 </View>
-                {/* <Pressable style={styles.selectlist.button} onPress={handleFetchContactsButtonPress}>
-                    <Text style={styles.button.text}>+</Text>
-                </Pressable> */}
             </View>
 
                 {/* <Text style={styles.label}>Description:</Text> */}
@@ -338,6 +283,7 @@ export default function Form() {
                     numberOfLines={4}
                     onChangeText={handleDetailChange}
                     placeholder='Enter details or contacts manually...'
+                    value = {detail}
                     multiline
                 />
             <View style={styles.containers}>
@@ -366,6 +312,9 @@ export default function Form() {
                 <Pressable style={styles.button.container} onPress={handleAddMoodButtonPress}>
                     <Text style={styles.button.text}>Add Mood</Text>
                 </Pressable>
+                {/* <Pressable style={styles.button.container} onPress={handleClearButtonPress}>
+                    <Text style={styles.button.text}>Clear</Text>
+                </Pressable> */}
             </View>
         </ScrollView>
     );
