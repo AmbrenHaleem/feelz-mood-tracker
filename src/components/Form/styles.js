@@ -127,7 +127,45 @@ const styles = StyleSheet.create({
     color: '#444',
     fontSize : 21,
     marginTop: 10
-  }
+  },
+
+  // tag
+  containers: {
+    flex: 1,
+    padding: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    marginBottom: 16,
+  },
+  input: {
+    flex: 1,
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    marginRight: 8,
+    paddingHorizontal: 8,
+  },
+  tagsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+  },
+  tag: {
+    backgroundColor: '#e0e0e0',
+    borderRadius: 16,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    margin: 4,
+  },
+  tagText: {
+    color: '#333',
+    fontSize: 14,
+  },
+ 
+ primaryColor: '#2A6194'
 });
 
 export default styles;

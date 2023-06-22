@@ -35,6 +35,31 @@ export default function Form() {
     //     (state) => {
     //         return state.mood.moods;
     //     });
+
+      // tag
+      const [tag, setTag] = useState('');
+      const [tags, setTags] = useState([]);
+  
+      const handleTagChange = (text) => {
+        setTag(text);
+      };
+    
+      const handleAddTag = () => {
+        if (tag.trim() !== '') {
+          setTags([...tags, tag]);
+          setTag('');
+        }
+      };
+
+      const handleRemoveTag = (index) => {
+        const updatedTags = [...tags];
+        updatedTags.splice(index, 1);
+        setTags(updatedTags);
+      };
+    
+  
+
+
     const handleDetailChange = (value) => {
         setDetail(value);
     }
@@ -315,6 +340,29 @@ export default function Form() {
                     placeholder='Enter details or contacts manually...'
                     multiline
                 />
+            <View style={styles.containers}>
+                        <View style={styles.inputContainer}>
+                            <TextInput
+                            value={tag}
+                            onChangeText={handleTagChange}
+                            placeholder="Enter a tag"
+                            style={styles.input}
+                            />
+                            <Button  title="Add Tag" onPress={handleAddTag} color={styles.primaryColor} />
+                        </View>
+                        <View style={styles.tagsContainer}>
+                            {tags.map((item, index) => (
+                            <TouchableOpacity
+                                key={index}
+                                style={styles.tag}
+                                onPress={() => handleRemoveTag(index)}
+                            >
+                                <Text style={styles.tagText}>{item}</Text>
+                            </TouchableOpacity>
+                            ))}
+                        </View>
+                        </View>
+
                 <Pressable style={styles.button.container} onPress={handleAddMoodButtonPress}>
                     <Text style={styles.button.text}>Add Mood</Text>
                 </Pressable>
