@@ -1,20 +1,24 @@
 import { View, StyleSheet, TouchableOpacity, Text, Alert, Button, ScrollView, RefreshControl, Image, StatusBar, TextInput, Dimensions, Modal } from 'react-native';
 import { useState, useEffect } from "react";
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { SelectList } from 'react-native-dropdown-select-list';
 import moment from "moment";
+import * as localDB from '../../../database/localdb';
+import { addMoodType, clearMoodType } from '../../../redux/moodTypeSlice';
 import { AntDesign } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
-
 import { addNoti, addTime, getNotis, getUser, getTime } from '../../../utils/storage';
+
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 function Entries({ navigation, route }) {
     const [title, setTitle] = useState("");
     const [showAdd, setShowAdd] = useState(false);
     const [showTimed, setShowTimed] = useState(false);
     const [every30Seconds, setEvery30Seconds] = useState(false);
-
-
     const [hour, setHour] = useState("");
     const [min, setMin] = useState("");
     const [sleepTime, setSleepTime] = useState(new Date());
@@ -23,7 +27,9 @@ function Entries({ navigation, route }) {
 
     const [wakeupTime, setWakeupTime] = useState(new Date());
 
-
+    const [moodTypes, setMoodTypes] = useState([]);
+    const [selectedMood, setSelectedMood] = useState(null);
+    const dispatch = useDispatch();
 
     const [description, setDescription] = useState("");
     const [cates, setCates] = useState([
@@ -64,11 +70,75 @@ function Entries({ navigation, route }) {
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [searchKey, setSearchKey] = useState('');
 
+    
+    
+  
+      
+    const activityData = useSelector(
+        (state) => { 
+            return state.activity.activities;
+        }).map((item) => {
+            return {
+                key: item.id,
+                value: item.activity
+            }
+        });
+    
+        const moodTypeData = useSelector(
+            (state) => { 
+                return state.moodType.moodTypes;
+            }).map((item) => {
+                return {
+                    key: item.id,
+                    value: item.moodType
+                }
+            });
 
-    useEffect(() => {
+    const handleConfirm = async () => {
+        if (!title) {
+          Alert.alert('Please input title!');
+          return;
+        }
+        if (!description) {
+          Alert.alert('Please input description!');
+          return;
+        }
+        if (!mood) {
+          Alert.alert('Please select a mood!');
+          return;
+        }
+        await addNoti({
+          title: title,
+          description: description,
+          value: selectCate.value,
+          time: moment().valueOf(),
+          mood: selectedMood,
+        });
+        Alert.alert('Add Success');
+      };
+
+      useEffect(() => {
+
+
+        (async () => {
+            try {
+                await localDB.init();
+               
+                 // load activities from the local db
+                 const moodTypesData = await localDB.readMoodType();
+                 dispatch(clearMoodType());
+                 let moodTypeData = moodTypesData.map((item) => {
+                    dispatch(addMoodType(item));
+                 });
+            }
+            catch (error) {
+                console.log('DB Error:', error);
+            }
+        })();
+    
         dealTimes();
-
     }, []);
+    
 
     const dealTimes = async () => {
         let time = await getTime();
@@ -181,9 +251,12 @@ function Entries({ navigation, route }) {
                     <Text style={{ color: "#fff", marginBottom: 10 }}>Description</Text>
                     <TextInput style={{ backgroundColor: "#ddd", borderRadius: 5, flex: 1, textAlignVertical: "top", padding: 10 }} numberOfLines={10} value={description} onChangeText={(t) => {
                         setDescription(t);
-                    }} placeholder=''></TextInput>
-
+                    }} placeholder=''>
+                    </TextInput>
                 </View>
+
+
+
                 <Text style={{ color: "#fff", marginBottom: 10 }}>Time</Text>
                 <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
                     {cates.map((item, i) => <TouchableOpacity key={item.name} onPress={() => {
@@ -213,13 +286,24 @@ function Entries({ navigation, route }) {
                     </TouchableOpacity>
                 </View>
 
-                {/* <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
-                    <TouchableOpacity onPress={() => {
+             
 
-                    }}>
-                        <Text style={{ color: "#ffffff" }}>Option</Text>
-                    </TouchableOpacity>
-                </View> */}
+
+                <View style={{ paddingTop: 30, marginBottom: 10 }}>
+                    <Text style={{ color: '#fff', marginBottom: 10 }}>Mood</Text>
+                    <View style={styles.container1}>
+                        <View style={styles.list} >
+                            <SelectList placeholder='Select Mood'
+                                setSelected={(val) => setSelectedMood(val)}
+                                data={moodTypeData}
+                                save="value"
+                                maxHeight = '120'
+                            />
+                        </View>
+                    </View>
+                   
+                </View>
+
 
                 <TouchableOpacity onPress={() => {
                     confirm();
@@ -240,15 +324,7 @@ function Entries({ navigation, route }) {
             <Modal visible={showAdd} fullScreen={true}>
                 <View style={{ backgroundColor: "#fff", marginTop: 100, alignItems: "center" }}>
                     <Text style={{ color: "#ff0000" }}>please enter the hour and minute for notification</Text>
-                    {/* <View style={{ flexDirection: "row", marginTop: 50 }}>
-                        <TextInput value={hour} style={{ borderBottom: "1px solid #000", borderBottomWidth: 1, width: 100 }} onChangeText={(text) => {
-                            setHour(text);
-                        }}></TextInput>
-                        <Text style={{ marginLeft: 10, marginRight: 10 }}>:</Text>
-                        <TextInput value={min} style={{ borderBottom: "1px solid #000", borderBottomWidth: 1, width: 100 }} onChangeText={(text) => {
-                            setMin(text);
-                        }}></TextInput>
-                    </View> */}
+                  
 
                     <Text style={{ marginTop: 20 }}>Wakeup time</Text>
                     <View style={{ marginTop: 10 }}>
@@ -300,6 +376,36 @@ const styles = StyleSheet.create({
         backgroundColor: "#353f48",
         flex: 1,
     },
+
+
+    
+    container1:{
+            flexDirection:'row',
+            alignSelf: 'stretch',
+            paddingBottom: 20,
+            
+        },
+    list:{
+            flex:8,
+            backgroundColor: '#f2f2f2',
+            borderRadius: 10,
+        },
+    
+    moodOptionsContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+      },
+      moodOption: {
+        backgroundColor: '#666',
+        marginRight: 10,
+        marginBottom: 10,
+        borderRadius: 5,
+        width: (windowWidth - 40) / 3,
+      },
+      moodOptionText: {
+        color: '#fff',
+        padding: 10,
+      },
 });
 
 export default Entries;
