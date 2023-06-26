@@ -1,5 +1,5 @@
 import { View, StyleSheet, TouchableOpacity, Text, Alert, Button, ScrollView, RefreshControl, Image, StatusBar, TextInput, Dimensions, Modal } from 'react-native';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { SelectList } from 'react-native-dropdown-select-list';
@@ -24,7 +24,7 @@ function Entries({ navigation, route }) {
     const [sleepTime, setSleepTime] = useState(new Date());
     const [showSleepTime, setShowSleepTime] = useState(false);
     const [showWakeupTime, setShowWakeupTime] = useState(false);
-
+    const every30SecondsRef = useRef(false);
     const [wakeupTime, setWakeupTime] = useState(new Date());
 
     const [moodTypes, setMoodTypes] = useState([]);
@@ -70,12 +70,12 @@ function Entries({ navigation, route }) {
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [searchKey, setSearchKey] = useState('');
 
-    
-    
-  
-      
+
+
+
+
     const activityData = useSelector(
-        (state) => { 
+        (state) => {
             return state.activity.activities;
         }).map((item) => {
             return {
@@ -83,63 +83,63 @@ function Entries({ navigation, route }) {
                 value: item.activity
             }
         });
-    
-        const moodTypeData = useSelector(
-            (state) => { 
-                return state.moodType.moodTypes;
-            }).map((item) => {
-                return {
-                    key: item.id,
-                    value: item.moodType
-                }
-            });
+
+    const moodTypeData = useSelector(
+        (state) => {
+            return state.moodType.moodTypes;
+        }).map((item) => {
+            return {
+                key: item.id,
+                value: item.moodType
+            }
+        });
 
     const handleConfirm = async () => {
         if (!title) {
-          Alert.alert('Please input title!');
-          return;
+            Alert.alert('Please input title!');
+            return;
         }
         if (!description) {
-          Alert.alert('Please input description!');
-          return;
+            Alert.alert('Please input description!');
+            return;
         }
         if (!mood) {
-          Alert.alert('Please select a mood!');
-          return;
+            Alert.alert('Please select a mood!');
+            return;
         }
         await addNoti({
-          title: title,
-          description: description,
-          value: selectCate.value,
-          time: moment().valueOf(),
-          mood: selectedMood,
+            title: title,
+            description: description,
+            value: selectCate.value,
+            time: moment().valueOf(),
+            mood: selectedMood,
         });
         Alert.alert('Add Success');
-      };
+    };
 
-      useEffect(() => {
+    useEffect(() => {
 
 
         (async () => {
             try {
                 await localDB.init();
-               
-                 // load activities from the local db
-                 const moodTypesData = await localDB.readMoodType();
-                 dispatch(clearMoodType());
-                 let moodTypeData = moodTypesData.map((item) => {
+
+                // load activities from the local db
+                const moodTypesData = await localDB.readMoodType();
+                dispatch(clearMoodType());
+                let moodTypeData = moodTypesData.map((item) => {
                     dispatch(addMoodType(item));
-                 });
+                });
             }
             catch (error) {
                 console.log('DB Error:', error);
             }
         })();
-    
+
         dealTimes();
     }, []);
-    
 
+    console.log('modalVisible', modalVisible);
     const dealTimes = async () => {
         let time = await getTime();
         if (time) {
@@ -149,6 +149,7 @@ function Entries({ navigation, route }) {
         setInterval(async () => {
             let notices = await getNotis();
             let time = await getTime();
+            console.log('time', every30Seconds);
             if (time && !showTimed) {
                 let now = moment().format("HH:mm");
                 if (now == time.sleepTime) {
@@ -171,8 +172,9 @@ function Entries({ navigation, route }) {
                     setModalVisible(true)
                 }
             }
+            console.log('---', every30SecondsRef.current, time)
 
-            if (every30Seconds && time) {
+            if (every30SecondsRef.current && time) {
                 let wakeupTime = moment(time.wakeupTime).valueOf();
                 let sleepTime = moment(time.sleepTime).valueOf();
                 let nowTime = moment().valueOf();
@@ -191,14 +193,20 @@ function Entries({ navigation, route }) {
         }, 10 * 1000);
         setInterval(async () => {
             let notices = await getNotis();
-            console.log("notices", notices);
-
+            console.log('notices', notices);
             notices.forEach((item) => {
-                let dis = Math.floor((moment().valueOf() - item.time) / 1000);
-                let leave = dis % item.value;
-                if ((leave <= 60 && dis / item.value >= 1) || every30Seconds) {
+                if (item?.isEvery30 && every30SecondsRef.current) {
                     setNoti(item);
                     setModalVisible(true)
+                    console.log('debug2---');
+                    return;
+                }
+                let dis = Math.floor((moment().valueOf() - item.time) / 1000);
+                let leave = dis % item.value;
+                if ((leave <= 60 && dis / item.value >= 1) || every30SecondsRef.current) {
+                    setNoti(item);
+                    setModalVisible(true)
+                    console.log('debug---');
                 }
             })
         }, 30 * 1000);
@@ -213,17 +221,31 @@ function Entries({ navigation, route }) {
             Alert.alert("Please input description!")
             return;
         }
+        if (!selectCate?.value && !every30Seconds) {
+            return
+        }
+        if (every30Seconds) {
+            every30SecondsRef.current = true;
+            await addNoti({
+                title: title,
+                description,
+                value: [],
+                isEvery30: true,
+                time: moment().valueOf()
+            })
+            Alert.alert("Add Success")
+            return;
+        }
         await addNoti({
             title: title,
             description,
-            value: selectCate.value,
+            value: selectCate?.value || '',
             time: moment().valueOf()
         })
         Alert.alert("Add Success")
     }
 
     const add = async () => {
-
         await addTime({
             sleepTime: moment(sleepTime).format("HH:mm"),
             wakeupTime: moment(wakeupTime).format("HH:mm"),
@@ -233,8 +255,6 @@ function Entries({ navigation, route }) {
         setShowTimed(false);
         Alert.alert("Add Success!")
     }
-
-
     return (
         <View
             style={styles.container}>
@@ -286,7 +306,7 @@ function Entries({ navigation, route }) {
                     </TouchableOpacity>
                 </View>
 
-             
+
 
 
                 <View style={{ paddingTop: 30, marginBottom: 10 }}>
@@ -297,11 +317,11 @@ function Entries({ navigation, route }) {
                                 setSelected={(val) => setSelectedMood(val)}
                                 data={moodTypeData}
                                 save="value"
-                                maxHeight = '120'
+                                maxHeight='120'
                             />
                         </View>
                     </View>
-                   
+
                 </View>
 
 
@@ -324,7 +344,7 @@ function Entries({ navigation, route }) {
             <Modal visible={showAdd} fullScreen={true}>
                 <View style={{ backgroundColor: "#fff", marginTop: 100, alignItems: "center" }}>
                     <Text style={{ color: "#ff0000" }}>please enter the hour and minute for notification</Text>
-                  
+
 
                     <Text style={{ marginTop: 20 }}>Wakeup time</Text>
                     <View style={{ marginTop: 10 }}>
@@ -378,34 +398,34 @@ const styles = StyleSheet.create({
     },
 
 
-    
-    container1:{
-            flexDirection:'row',
-            alignSelf: 'stretch',
-            paddingBottom: 20,
-            
-        },
-    list:{
-            flex:8,
-            backgroundColor: '#f2f2f2',
-            borderRadius: 10,
-        },
-    
+
+    container1: {
+        flexDirection: 'row',
+        alignSelf: 'stretch',
+        paddingBottom: 20,
+
+    },
+    list: {
+        flex: 8,
+        backgroundColor: '#f2f2f2',
+        borderRadius: 10,
+    },
+
     moodOptionsContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-      },
-      moodOption: {
+    },
+    moodOption: {
         backgroundColor: '#666',
         marginRight: 10,
         marginBottom: 10,
         borderRadius: 5,
         width: (windowWidth - 40) / 3,
-      },
-      moodOptionText: {
+    },
+    moodOptionText: {
         color: '#fff',
         padding: 10,
-      },
+    },
 });
 
 export default Entries;
