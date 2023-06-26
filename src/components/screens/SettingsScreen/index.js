@@ -318,6 +318,7 @@ function Entries({ navigation, route }) {
                                 data={moodTypeData}
                                 save="value"
                                 maxHeight='120'
+                                style={{ color: 'white' }}
                             />
                         </View>
                     </View>
@@ -396,9 +397,6 @@ const styles = StyleSheet.create({
         backgroundColor: "#353f48",
         flex: 1,
     },
-
-
-
     container1: {
         flexDirection: 'row',
         alignSelf: 'stretch',
@@ -407,24 +405,8 @@ const styles = StyleSheet.create({
     },
     list: {
         flex: 8,
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#353f48',
         borderRadius: 10,
-    },
-
-    moodOptionsContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-    },
-    moodOption: {
-        backgroundColor: '#666',
-        marginRight: 10,
-        marginBottom: 10,
-        borderRadius: 5,
-        width: (windowWidth - 40) / 3,
-    },
-    moodOptionText: {
-        color: '#fff',
-        padding: 10,
     },
 });
 
