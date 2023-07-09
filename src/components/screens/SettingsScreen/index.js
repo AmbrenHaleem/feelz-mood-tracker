@@ -9,7 +9,8 @@ import { addMoodType, clearMoodType } from '../../../redux/moodTypeSlice';
 import { AntDesign } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { addNoti, addTime, getNotis, getUser, getTime } from '../../../utils/storage';
-
+import { primaryColor } from '../../../includes/variable';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -118,9 +119,10 @@ function Entries({ navigation, route }) {
     };
 
     useEffect(() => {
-
+       
 
         (async () => {
+            await  AsyncStorage.setItem('@notis2', '')
             try {
                 await localDB.init();
 
@@ -139,7 +141,6 @@ function Entries({ navigation, route }) {
         dealTimes();
     }, []);
 
-    console.log('modalVisible', modalVisible);
     const dealTimes = async () => {
         let time = await getTime();
         if (time) {
@@ -149,7 +150,6 @@ function Entries({ navigation, route }) {
         setInterval(async () => {
             let notices = await getNotis();
             let time = await getTime();
-            console.log('time', every30Seconds);
             if (time && !showTimed) {
                 let now = moment().format("HH:mm");
                 if (now == time.sleepTime) {
@@ -172,7 +172,6 @@ function Entries({ navigation, route }) {
                     setModalVisible(true)
                 }
             }
-            console.log('---', every30SecondsRef.current, time)
 
             if (every30SecondsRef.current && time) {
                 let wakeupTime = moment(time.wakeupTime).valueOf();
@@ -229,6 +228,7 @@ function Entries({ navigation, route }) {
             await addNoti({
                 title: title,
                 description,
+                selectedMood: selectedMood || '',
                 value: [],
                 isEvery30: true,
                 time: moment().valueOf()
@@ -239,6 +239,7 @@ function Entries({ navigation, route }) {
         await addNoti({
             title: title,
             description,
+            selectedMood: selectedMood || '',
             value: selectCate?.value || '',
             time: moment().valueOf()
         })
@@ -260,16 +261,16 @@ function Entries({ navigation, route }) {
             style={styles.container}>
             <ScrollView>
                 <View style={{ paddingTop: 30, marginBottom: 10 }}>
-                    <Text style={{ color: "#fff", marginBottom: 10 }}>Title</Text>
-                    <TextInput style={{ backgroundColor: "#ddd", height: 40, borderRadius: 5, flex: 1, paddingLeft: 10 }} value={title} onChangeText={(t) => {
+                    <Text style={{ color: "#000", marginBottom: 10 }}>Title</Text>
+                    <TextInput style={{ backgroundColor: "#fff", borderWidth: 1, height: 40, borderRadius: 5, flex: 1, paddingLeft: 10 }} value={title} onChangeText={(t) => {
                         setTitle(t);
                     }} placeholder=''></TextInput>
 
                 </View>
 
                 <View style={{ paddingTop: 30, marginBottom: 10 }}>
-                    <Text style={{ color: "#fff", marginBottom: 10 }}>Description</Text>
-                    <TextInput style={{ backgroundColor: "#ddd", borderRadius: 5, flex: 1, textAlignVertical: "top", padding: 10 }} numberOfLines={10} value={description} onChangeText={(t) => {
+                    <Text style={{ color: "#000", marginBottom: 10 }}>Description</Text>
+                    <TextInput style={{ backgroundColor: "#fff", borderWidth: 1, borderRadius: 5, flex: 1, textAlignVertical: "top", padding: 10 }} numberOfLines={10} value={description} onChangeText={(t) => {
                         setDescription(t);
                     }} placeholder=''>
                     </TextInput>
@@ -282,26 +283,26 @@ function Entries({ navigation, route }) {
                     {cates.map((item, i) => <TouchableOpacity key={item.name} onPress={() => {
                         setSelectCate(item);
                         setEvery30Seconds(false);
-                    }} style={{ backgroundColor: selectCate == item ? "#000" : "#666", marginRight: i % 2 == 0 ? 10 : 0, borderRadius: 5, marginBottom: 10, width: (windowWidth - 40) / 2 }}>
+                    }} style={{ backgroundColor: selectCate == item ? "blue" : primaryColor, marginRight: i % 2 == 0 ? 10 : 0, borderRadius: 5, marginBottom: 10, width: (windowWidth - 40) / 2 }}>
                         <Text style={{ color: "#fff", padding: 10, }}>{item.name}</Text>
                     </TouchableOpacity>)}
                 </View>
 
-                <View style={{ flexDirection: "row" }}>
+                <View style={{ flexDirection: "row",marginTop:20 }}>
                     <TouchableOpacity onPress={() => {
                         setEvery30Seconds(!every30Seconds);
                         setSelectCate(null);
                     }}>
-                        {every30Seconds ? <AntDesign name="checksquareo" size={24} color="#fff" /> : <View style={{ width: 20, height: 20, borderColor: "#fff", borderWidth: 2 }}></View>}
+                        {every30Seconds ? <AntDesign name="checksquareo" size={24} color="#000" /> : <View style={{ width: 20, height: 20, borderColor: "#000", borderWidth: 2 }}></View>}
                     </TouchableOpacity>
-                    <Text style={{ color: "#fff", marginLeft: 10 }}>Every 30 Seconds (for testing purposes only)</Text>
+                    <Text style={{ color: "#000", marginLeft: 10 }}>Every 30 Seconds (for testing purposes only)</Text>
                 </View>
 
-                <Text style={{ color: "#fff", marginBottom: 10, marginTop: 30 }}>Other Settings</Text>
+                <Text style={{ color: "#000", marginBottom: 10, marginTop: 30 }}>Other Settings</Text>
                 <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
                     <TouchableOpacity onPress={() => {
                         setShowAdd();
-                    }} style={{ backgroundColor: "#000", marginRight: 0, borderRadius: 5, marginBottom: 10, width: (windowWidth - 40) / 2 }}>
+                    }} style={{ backgroundColor: primaryColor, borderWidth: 1, marginRight: 0, borderRadius: 5, marginBottom: 10, width: (windowWidth - 40) / 2 }}>
                         <Text style={{ color: "#fff", padding: 10, }}>Working Hours</Text>
                     </TouchableOpacity>
                 </View>
@@ -318,7 +319,7 @@ function Entries({ navigation, route }) {
                                 data={moodTypeData}
                                 save="value"
                                 maxHeight='120'
-                                style={{ color: 'white' }}
+                                style={{ color: '#000' }}
                             />
                         </View>
                     </View>
@@ -328,8 +329,8 @@ function Entries({ navigation, route }) {
 
                 <TouchableOpacity onPress={() => {
                     confirm();
-                }} style={{ backgroundColor: "#141588", alignItems: "center", justifyContent: "center", borderRadius: 5, width: 100, marginLeft: 10, marginTop: 20 }}>
-                    <Text style={{ color: "#fff", padding: 10 }}>ADD</Text>
+                }} style={{ backgroundColor: primaryColor, alignItems: "center", justifyContent: "center", borderRadius: 5, width: 100, marginLeft: 10, marginTop: 20 }}>
+                    <Text style={{ color: "#fff", backgroundColor: primaryColor, padding: 10 }}>ADD</Text>
                 </TouchableOpacity>
                 {modalVisible &&
                     <TouchableOpacity onPress={() => {
@@ -337,6 +338,10 @@ function Entries({ navigation, route }) {
                     }} style={{ backgroundColor: "#fff", borderRadius: 10, position: "absolute", top: 20, width: windowWidth - 50, left: 10, right: 0, padding: 10 }}>
                         <Text style={{ fontSize: 16, fontWeight: "bold" }}>Notification</Text>
                         <Text style={{ color: "#000", fontSize: 15 }}>{noti.title}</Text>
+                        {
+                            noti.selectedMood && <Text style={{ color: "#888", fontSize: 14 }}>{noti.selectedMood}</Text>
+                        }
+
                         <Text style={{ color: "#888", fontSize: 14 }}>{noti.description}</Text>
                     </TouchableOpacity>}
 
@@ -365,7 +370,6 @@ function Entries({ navigation, route }) {
                         }} title={sleepTime ? moment(sleepTime).format("HH:mm") : 'Select'}></Button>
                     </View>
                     {showSleepTime ? <DateTimePicker value={sleepTime} mode="time" onChange={(v) => {
-                        console.log("sleepTime", v);
                         setSleepTime(new Date(v.nativeEvent.timestamp));
                         setShowSleepTime(false);
                     }} /> : <></>}
@@ -394,7 +398,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         paddingTop: 24,
         paddingBottom: 10,
-        backgroundColor: "#353f48",
+        backgroundColor: "#fff",
         flex: 1,
     },
     container1: {
@@ -405,7 +409,7 @@ const styles = StyleSheet.create({
     },
     list: {
         flex: 8,
-        backgroundColor: '#353f48',
+        backgroundColor: '#fff',
         borderRadius: 10,
     },
 });
