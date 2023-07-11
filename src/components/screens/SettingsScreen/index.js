@@ -192,7 +192,7 @@ function Entries({ navigation, route }) {
         }, 10 * 1000);
         setInterval(async () => {
             let notices = await getNotis();
-            console.log('notices', notices);
+            // console.log('notices', notices);
             notices.forEach((item) => {
                 if (item?.isEvery30 && every30SecondsRef.current) {
                     setNoti(item);

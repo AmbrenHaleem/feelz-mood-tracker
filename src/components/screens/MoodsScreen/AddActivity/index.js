@@ -6,7 +6,7 @@ import * as localDB from '../../../../database/localdb'
 import { useDispatch, useSelector } from 'react-redux';
 import { addActivity } from '../../../../redux/activitySlice';
 
-export default function AddActivity({ navigation }) {
+export default function AddActivity({ navigation, route }) {
     const [activity, setActivity] = useState('');
     const [errorMessages, setErrorMessages] = useState([]);
     const [savingDate, setSavingData] = useState(false);
@@ -84,7 +84,7 @@ export default function AddActivity({ navigation }) {
                     setActivity('');
                     setErrorMessages([]);
                     Keyboard.dismiss();
-                    // props.navigation.goBack();
+                    navigation.goBack();
                 }
             }
         }

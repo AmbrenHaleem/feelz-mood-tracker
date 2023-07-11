@@ -6,7 +6,7 @@ import * as localDB from '../../../../database/localdb'
 import { useDispatch, useSelector } from 'react-redux';
 import { addMoodType } from '../../../../redux/moodTypeSlice';
 
-export default function AddMoodType({ navigation }) {
+export default function AddMoodType({ navigation, route }) {
   const [moodType, setMoodType] = useState('');
   const [errorMessages, setErrorMessages] = useState([]);
   const [savingDate, setSavingData] = useState(false);
@@ -64,7 +64,7 @@ export default function AddMoodType({ navigation }) {
               setMoodType('');
               setErrorMessages([]);
               Keyboard.dismiss();
-              // props.navigation.goBack();
+              navigation.goBack();
           }
       }
     }

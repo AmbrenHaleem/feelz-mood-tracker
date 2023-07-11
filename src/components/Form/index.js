@@ -88,9 +88,9 @@ export default function Form() {
             if (selectedActivity === '') {
                 validate.push('Activity is required.');
             }
-            if (selectedContact === '') {
-                validate.push('Contact is required.');
-            }
+            // if (selectedContact === '') {
+            //     validate.push('Contact is required.');
+            // }
             if (detail === '') {
                 validate.push('Detail is required.');
             }
@@ -127,7 +127,7 @@ export default function Form() {
                     setDetail('')
                     setErrorMessages([]);
                     Keyboard.dismiss();
-                    // props.navigation.goBack();
+                    navigation.goBack();
                 }
             }
         }
