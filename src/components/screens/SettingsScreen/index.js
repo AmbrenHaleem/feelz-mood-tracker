@@ -192,7 +192,7 @@ function Entries({ navigation, route }) {
         }, 10 * 1000);
         setInterval(async () => {
             let notices = await getNotis();
-            // console.log('notices', notices);
+            console.log('notices', notices);
             notices.forEach((item) => {
                 if (item?.isEvery30 && every30SecondsRef.current) {
                     setNoti(item);
@@ -259,7 +259,7 @@ function Entries({ navigation, route }) {
     return (
         <View
             style={styles.container}>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{ paddingTop: 30, marginBottom: 10 }}>
                     <Text style={{ color: "#000", marginBottom: 10 }}>Title</Text>
                     <TextInput style={{ backgroundColor: "#fff", borderWidth: 1, height: 40, borderRadius: 5, flex: 1, paddingLeft: 10 }} value={title} onChangeText={(t) => {
@@ -346,7 +346,7 @@ function Entries({ navigation, route }) {
                     </TouchableOpacity>}
 
 
-            </ScrollView >
+            </ScrollView>
             <Modal visible={showAdd} fullScreen={true}>
                 <View style={{ backgroundColor: "#fff", marginTop: 100, alignItems: "center" }}>
                     <Text style={{ color: "#ff0000" }}>please enter the hour and minute for notification</Text>
@@ -375,15 +375,15 @@ function Entries({ navigation, route }) {
                     }} /> : <></>}
                     <TouchableOpacity onPress={() => {
                         add();
-                    }} style={{ backgroundColor: "#7687ff", borderRadius: 10, padding: 10, marginTop: 60 }}>
-                        <Text>
+                    }} style={{ backgroundColor:primaryColor, borderRadius: 10, padding: 10, marginTop: 60,width:80,display:'flex',justifyContent:'center',alignItems:'center' }}>
+                        <Text style={{color:"#fff"}}>
                             ADD
                         </Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
                         setShowAdd(false);
-                    }} style={{ backgroundColor: "#7687ff", borderRadius: 10, padding: 10, marginTop: 10 }}>
-                        <Text>
+                    }} style={{ backgroundColor: primaryColor, borderRadius: 10, padding: 10, marginTop: 10 ,width:80,display:'flex',justifyContent:'center',alignItems:'center'}}>
+                        <Text style={{color:"#fff"}}>
                             CLOSE
                         </Text>
                     </TouchableOpacity>
