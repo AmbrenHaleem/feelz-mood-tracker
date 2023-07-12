@@ -116,11 +116,11 @@ export default function Form() {
                 ]
                 setMoods(newMoods);
 
-                dispatch(addMood(newMoodEntry));
+              //  dispatch(addMood(newMoodEntry));
 
                 if (newMoodEntry) {
                     Alert.alert("Mood added successfully.");
-                   
+                    dispatch(addMood(newMoodEntry));
                     setMoodTypes([]);
                     setActivities([]);
                     setContactList([]);
@@ -222,7 +222,7 @@ export default function Form() {
         });
 
     return (
-        <ScrollView>
+        <ScrollView >
             <View style={styles.container}>
             {errorMessages.length > 0 && (
                     <View style={styles.errorMessage.container}>
@@ -286,28 +286,34 @@ export default function Form() {
                     value = {detail}
                     multiline
                 />
-            <View style={styles.containers}>
-                        <View style={styles.inputContainer}>
+            {/* <View style={styles.containers}> */}
+                        <View style={styles.tagContainer}>
                             <TextInput
                             value={tag}
                             onChangeText={handleTagChange}
                             placeholder="Enter a tag"
-                            style={styles.input}
+                            style={styles.tagTextbox}
                             />
-                            <Button  title="Add Tag" onPress={handleAddTag} color={styles.primaryColor} />
+                            {/* <Button  title="Add Tag" onPress={handleAddTag} color={styles.primaryColor} /> */}
+
+                        <Pressable style={styles.selectlist.button} onPress={handleAddTag}>
+                            <Text style={styles.button.text}>Add Tag</Text>
+                        </Pressable>
                         </View>
-                        <View style={styles.tagsContainer}>
-                            {tags.map((item, index) => (
-                            <TouchableOpacity
-                                key={index}
-                                style={styles.tag}
-                                onPress={() => handleRemoveTag(index)}
-                            >
-                                <Text style={styles.tagText}>{item}</Text>
-                            </TouchableOpacity>
-                            ))}
-                        </View>
-                        </View>
+                        <ScrollView horizontal>
+                            <View style={styles.tagsContainer}>
+                                {tags.map((item, index) => (
+                                <TouchableOpacity
+                                    key={index}
+                                    style={styles.tag}
+                                    onPress={() => handleRemoveTag(index)}
+                                >
+                                    <Text style={styles.tagText}>{item}</Text>
+                                </TouchableOpacity>
+                                ))}
+                            </View>
+                        </ScrollView>
+                {/* </View> */}
 
                 <Pressable style={styles.button.container} onPress={handleAddMoodButtonPress}>
                     <Text style={styles.button.text}>Add Mood</Text>

@@ -18,8 +18,10 @@ import HomeScreen from './src/components/screens/HomeScreen/index.js';
 
 import { Provider } from 'react-redux';
 import { store } from './src/redux/store.js';
-
+import * as database from './src/database/localdb.js';
 // Keep the splash screen visible while we fetch resources
+
+
 SplashScreen.preventAutoHideAsync()
 .then((prevented) => {
   console.log('Prevented:', prevented);
@@ -32,10 +34,13 @@ const Tab = createBottomTabNavigator();
 
 export default function App() {
 
+  // const [moods,setMoods] = useState([]);
+
   useEffect(() => {
     console.log("Loading DB...");
-
-    // Hides the Splash Screen that was prevented to auto hide.
+    // Load the db
+    
+    //Hides the Splash Screen that was prevented to auto hide.
     SplashScreen.hideAsync()
     .then((hidden) => {
       console.log('Hidden:', hidden);
@@ -45,7 +50,7 @@ export default function App() {
     })
   },[]);
 
-  const [moods,setMoods] = useState([]);
+  
   return (
     <Provider store={store}>
     <NavigationContainer>
@@ -74,7 +79,7 @@ export default function App() {
           }}
           >
           {(props) => (
-            <HomeScreen {...props} moods={moods}/>
+            <HomeScreen {...props} />
           )}
           </Tab.Screen>
           <Tab.Screen name='MoodsScreen' 

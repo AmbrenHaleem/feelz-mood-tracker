@@ -364,7 +364,7 @@ export function readMood() {
         database.transaction(
             (tx) => {
                 tx.executeSql(
-                    'SELECT * FROM Mood',
+                    `SELECT * FROM Mood `,
                     [],
                     (tx, result) => {
                         const moods = [];

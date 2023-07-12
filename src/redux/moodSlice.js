@@ -6,6 +6,10 @@ export const moodSlice = createSlice({
         moods: []
     }, 
     reducers: {
+        loadMoods: (state, action) => {
+            state.moods = action.payload;
+          //  console.log('Action', action);
+        },
         addMood: (state, action) => {
            const newMood = {
             id: action.payload.id,
@@ -17,11 +21,11 @@ export const moodSlice = createSlice({
            };
            state.moods.push(newMood);
         },
-        clearMoodType: (state) => {
-            state.moodTypes = [];
-        },
+        // clearMoodType: (state) => {
+        //     state.moodTypes = [];
+        // },
     }
 });
 
-export const { addMood, clearMood } = moodSlice.actions;
+export const { addMood, clearMood, loadMoods } = moodSlice.actions;
 export default moodSlice.reducer;

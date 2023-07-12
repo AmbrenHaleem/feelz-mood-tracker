@@ -32,12 +32,13 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         alignSelf: 'stretch',
         paddingBottom: 20,
-        
     },
     list:{
         flex:8,
         backgroundColor: '#f2f2f2',
         borderRadius: 10,
+        zIndex: 50,
+        position: 'fixed'
     },
     button:{
         flex:1,
@@ -80,6 +81,22 @@ const styles = StyleSheet.create({
     flex: 1,
     height:80,
     textAlignVertical:'top'},
+  tagTextbox:{
+    borderWidth: 1,
+    borderColor: '#747474',
+    //paddingTop: 2,
+    paddingHorizontal: 14,
+    fontSize: 16,
+    borderRadius: 10,
+    flex: 3,
+   // height:80,
+   // textAlignVertical:'top'
+  },
+  tagContainer:{
+        flexDirection:'row',
+        alignSelf: 'stretch',
+        paddingTop: 20,
+  },
   button: {
     container: {
       alignItems: 'center',
@@ -149,9 +166,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   tagsContainer: {
+    paddingTop:10,
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
+    height: 60
   },
   tag: {
     backgroundColor: '#e0e0e0',
