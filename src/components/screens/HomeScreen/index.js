@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addMood } from '../../../database/localdb';
 import { loadMoods } from '../../../redux/moodSlice';
 import * as database from '../../../database/localdb';
+import MoodInfo from '../../MoodInfo';
 
 const HomeScreen = ({ navigation, route}) => {
   const [showWakingHoursDialog, setShowWakingHoursDialog] = useState(false);
@@ -57,7 +58,6 @@ const HomeScreen = ({ navigation, route}) => {
     (state) => {
         return state.mood.moods;
     });
-    console.log("moodData : ", moodData);
   
   return (
     <View style={{ flex:1, paddingTop: 10, paddingRight:10, paddingLeft: 10, paddingBottom: 10}}>
@@ -71,6 +71,8 @@ const HomeScreen = ({ navigation, route}) => {
         </View>
       )}
        <View>
+       <MoodInfo moodData={moodData}/>
+
           <MoodList moods={moodData} navigation={navigation}/>
         </View>
     </View>
