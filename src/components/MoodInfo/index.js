@@ -141,7 +141,7 @@ export default function MoodInfo({ moodData }) {
     <View style={{backgroundColor:'#fff',paddingTop:10,borderRadius:20,borderWidth:1,
     borderColor: 'rgba(0,0,0,0.2)',}}>
       <View style={{display:"flex",justifyContent:"center",alignItems:"center",marginBottom:20}}>
-      <Text style={{color:primaryColor,fontSize:28}}>You Summary</Text>
+      <Text style={{color:primaryColor,fontSize:28}}>Your Summary</Text>
 
       </View>
       <View style={{ display: "flex", width: '100%', justifyContent: "space-around", alignItems: "center", flexDirection: 'row' }}>
