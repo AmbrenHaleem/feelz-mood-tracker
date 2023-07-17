@@ -106,7 +106,7 @@ export default function MoodInfo({ moodData }) {
     if (selectedAnalysis === "weekly") {
       const weeklyMoodPercentages = getWeeklyMoodPercentages();
       if (Object.keys(weeklyMoodPercentages).length === 0) {
-        return <View style={{display:"flex",justifyContent:"center",alignItems:"center",paddingBottom:20,paddingTop:20}}><Text>no data</Text></View>;
+        return <View style={{display:"flex",justifyContent:"center",alignItems:"center",paddingBottom:20,paddingTop:20}}><Text>No data available to show</Text></View>;
       }
 
       return (
@@ -122,7 +122,7 @@ export default function MoodInfo({ moodData }) {
     } else if (selectedAnalysis === "monthly") {
       const monthlyMoodPercentages = getMonthlyMoodPercentages();
       if (Object.keys(monthlyMoodPercentages).length === 0) {
-        return <View style={{display:"flex",justifyContent:"center",alignItems:"center",paddingBottom:20,paddingTop:20}}><Text>no data</Text></View>;
+        return <View style={{display:"flex",justifyContent:"center",alignItems:"center",paddingBottom:20,paddingTop:20}}><Text>No data available to show</Text></View>;
       }
 
       return (

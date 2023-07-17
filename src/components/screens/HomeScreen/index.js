@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text , Button, Pressable} from 'react-native';
+import { View, Text , Button, Pressable, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import WakingHoursDialog from './DailogueScreen/WakingHoursDialog';
 import { primaryColor } from '../../../includes/variable';
@@ -74,8 +74,10 @@ const HomeScreen = ({ navigation, route}) => {
         </View>
       )}
        <View style={{flex:14,flexDirection:'column', justifyContent:'flex-start',alignItems:'stretch'}}>
-       <MoodInfo moodData={moodData}/>
-
+          
+          
+              <MoodInfo moodData={moodData}/>
+         
           <MoodList moods={moodData} navigation={navigation}/>
         </View>
     </View>

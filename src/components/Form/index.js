@@ -122,7 +122,7 @@ export default function Form() {
                     dispatch(addMood(newMoodEntry));
                     setMoodTypes([]);
                     setActivities([]);
-                    setContactList([]);
+                //    setContactList([]);
                     setDetail('')
                     setErrorMessages([]);
                     setTags([]);
