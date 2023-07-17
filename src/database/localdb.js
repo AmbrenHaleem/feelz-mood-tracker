@@ -53,7 +53,8 @@ export function init() {
                     activity TEXT NOT NULL,
                     contact TEXT NOT NULL,
                     detail TEXT NOT NULL,
-                    moodDatetime TEXT NOT NULL
+                    moodDatetime TEXT NOT NULL,
+                    tags TEXT NOT NULL
                     )
                     `,
                 [],
@@ -376,7 +377,8 @@ export function readMood() {
                                 activity: row.activity,
                                 contact: row.contact,
                                 detail: row.detail,
-                                moodDatetime: row.moodDatetime
+                                moodDatetime: row.moodDatetime,
+                                tag: row.tags
                             }
                             moods.push(mood);
                             //console.log('Activity:',activity);
@@ -396,7 +398,7 @@ export function readMood() {
     });
 }
 
-export function addMood(mood, activity, contact, detail, moodDatetime) {
+export function addMood(mood, activity, contact, detail, moodDatetime, tags) {
     return new Promise((resolve, reject) => {
         const database = open();
         console.log('Database opened', database);
@@ -405,10 +407,10 @@ export function addMood(mood, activity, contact, detail, moodDatetime) {
                 console.log('Database opened and now in transaction', database);
                 tx.executeSql(
                     `
-                    INSERT INTO Mood (mood, activity, contact, detail, moodDatetime)
-                    VALUES (?,?,?,?,?)
+                    INSERT INTO Mood (mood, activity, contact, detail, moodDatetime, tags)
+                    VALUES (?,?,?,?,?,?)
                     `,
-                    [mood, activity, contact, detail, moodDatetime ],
+                    [mood, activity, contact, detail, moodDatetime,tags ],
                     (tx, result) => {
                         // console.log('Data Added', result);
                         const newMoodEntry = {
@@ -416,7 +418,8 @@ export function addMood(mood, activity, contact, detail, moodDatetime) {
                             activity: activity,
                             contact: contact,
                             detail: detail,
-                            moodDatetime: moodDatetime
+                            moodDatetime: moodDatetime,
+                            tags: tags
                         };
                         resolve(newMoodEntry);
                     },
@@ -434,7 +437,7 @@ export function addMood(mood, activity, contact, detail, moodDatetime) {
     });
 }
 
-export function updateMood(id, mood, activity) {
+export function updateMood(id, mood, activity, moodDatetime, tags) {
     return new Promise((resolve, reject) => {
         const database = open();
         database.transaction(
@@ -442,10 +445,10 @@ export function updateMood(id, mood, activity) {
                 tx.executeSql(
                     `
                     UPDATE Mood
-                    SET mood = ?, activity = ?, contact = ?, detail = ?, moodDatetime = ?
+                    SET mood = ?, activity = ?, contact = ?, detail = ?, moodDatetime = ?, tags = ?
                     WHERE id = ?;
                     `,
-                    [mood, activity, id],
+                    [mood, activity, moodDatetime, tags, id],
                     (tx, result) => {
                         resolve();
                     },

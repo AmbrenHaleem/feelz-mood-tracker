@@ -3,6 +3,7 @@ import { View, Text, ScrollView, StyleSheet, Button, TouchableOpacity } from "re
 import moment from "moment";
 import { AntDesign } from '@expo/vector-icons';
 import { primaryColor } from "../../includes/variable";
+import { Entypo } from '@expo/vector-icons';
 
 const styles = StyleSheet.create({
   container: {
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius:20,
-    backgroundColor: '#fff',
+    backgroundColor: '#fbefff',
     marginTop: 10,
   },
   moodText: {
@@ -138,11 +139,13 @@ export default function MoodInfo({ moodData }) {
   };
 
   return (
-    <View style={{backgroundColor:'#fff',paddingTop:10,borderRadius:20,borderWidth:1,
+    <View style={{backgroundColor:'#fff3c9',paddingTop:10,borderRadius:20,borderWidth:1,
     borderColor: 'rgba(0,0,0,0.2)',}}>
-      <View style={{display:"flex",justifyContent:"center",alignItems:"center",marginBottom:20}}>
+      <View style={{display:"flex",flexDirection:'row',justifyContent:"center",alignItems:"center",marginBottom:20}}>
       <Text style={{color:primaryColor,fontSize:28}}>Your Summary</Text>
-
+      <View style={{paddingHorizontal:4}}>
+        <Entypo name="emoji-happy" size={29} color="magenta" />
+      </View>
       </View>
       <View style={{ display: "flex", width: '100%', justifyContent: "space-around", alignItems: "center", flexDirection: 'row' }}>
         {/* <TouchableOpacity onPress={() => {

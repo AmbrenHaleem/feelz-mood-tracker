@@ -4,10 +4,10 @@ import { greyColor, primaryColor } from '../../../../../includes/variable';
 const styles = StyleSheet.create({
     
     card: {
-        backgroundColor:'#fff',
+        backgroundColor:'#e8f7ff',
        // backgroundColor: "#FEDFF6",
         marginTop: 10,
-        marginHorizontal: 10,
+        marginHorizontal:3,
         borderWidth:1,
         borderColor: 'rgba(0,0,0,0.2)',
         padding:10,
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
         borderRadius:10
     },
     title: {
-        fontSize: 18,
+        fontSize: 17,
         fontWeight: 'bold',
         color: primaryColor
     },
@@ -24,6 +24,13 @@ const styles = StyleSheet.create({
         fontSize:14,
         color: greyColor,
         maxHeight:36
+    },
+    mood:{
+        fontSize:14,
+        fontWeight:'bold',
+        color: greyColor,
+        maxHeight:36,
+        paddingVertical:5
     },
     switch:{
         alignItems: 'center',

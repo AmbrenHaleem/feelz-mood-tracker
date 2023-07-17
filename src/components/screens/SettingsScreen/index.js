@@ -72,9 +72,6 @@ function Entries({ navigation, route }) {
     const [searchKey, setSearchKey] = useState('');
 
 
-
-
-
     const activityData = useSelector(
         (state) => {
             return state.activity.activities;
@@ -192,7 +189,7 @@ function Entries({ navigation, route }) {
         }, 10 * 1000);
         setInterval(async () => {
             let notices = await getNotis();
-            console.log('notices', notices);
+          //  console.log('notices', notices);
             notices.forEach((item) => {
                 if (item?.isEvery30 && every30SecondsRef.current) {
                     setNoti(item);
@@ -260,57 +257,23 @@ function Entries({ navigation, route }) {
         <View
             style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={{ paddingTop: 30, marginBottom: 10 }}>
-                    <Text style={{ color: "#000", marginBottom: 10 }}>Title</Text>
-                    <TextInput style={{ backgroundColor: "#fff", borderWidth: 1, height: 40, borderRadius: 5, flex: 1, paddingLeft: 10 }} value={title} onChangeText={(t) => {
+                <View style={{ paddingTop: 15, marginBottom: 10 }}>
+                    {/* <Text style={{ color: "#000", marginBottom: 10 }}>Title</Text> */}
+                    <TextInput style={{ backgroundColor: "#fff", borderWidth: 1, height: 45, borderRadius: 10, flex: 1, paddingHorizontal: 10, borderColor: '#747474', paddingVertical:10,fontSize: 15,}} value={title} onChangeText={(t) => {
                         setTitle(t);
-                    }} placeholder=''></TextInput>
+                    }} placeholder='Enter notification title'></TextInput>
 
                 </View>
 
-                <View style={{ paddingTop: 30, marginBottom: 10 }}>
-                    <Text style={{ color: "#000", marginBottom: 10 }}>Description</Text>
-                    <TextInput style={{ backgroundColor: "#fff", borderWidth: 1, borderRadius: 5, flex: 1, textAlignVertical: "top", padding: 10 }} numberOfLines={10} value={description} onChangeText={(t) => {
+                <View style={{ paddingTop: 15, marginBottom: 1 }}>
+                    {/* <Text style={{ color: "#000", marginBottom: 10 }}>Description</Text> */}
+                    <TextInput style={{ backgroundColor: "#fff", borderWidth: 1,height: 45, borderRadius: 10, flex: 1, paddingHorizontal:10,  borderColor: '#747474',paddingVertical:10,fontSize: 15,}} numberOfLines={10} value={description} onChangeText={(t) => {
                         setDescription(t);
-                    }} placeholder=''>
+                    }} placeholder='Enter notification description'>
                     </TextInput>
                 </View>
 
-
-
-                <Text style={{ color: "#fff", marginBottom: 10 }}>Time</Text>
-                <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-                    {cates.map((item, i) => <TouchableOpacity key={item.name} onPress={() => {
-                        setSelectCate(item);
-                        setEvery30Seconds(false);
-                    }} style={{ backgroundColor: selectCate == item ? "blue" : primaryColor, marginRight: i % 2 == 0 ? 10 : 0, borderRadius: 5, marginBottom: 10, width: (windowWidth - 40) / 2 }}>
-                        <Text style={{ color: "#fff", padding: 10, }}>{item.name}</Text>
-                    </TouchableOpacity>)}
-                </View>
-
-                <View style={{ flexDirection: "row",marginTop:20 }}>
-                    <TouchableOpacity onPress={() => {
-                        setEvery30Seconds(!every30Seconds);
-                        setSelectCate(null);
-                    }}>
-                        {every30Seconds ? <AntDesign name="checksquareo" size={24} color="#000" /> : <View style={{ width: 20, height: 20, borderColor: "#000", borderWidth: 2 }}></View>}
-                    </TouchableOpacity>
-                    <Text style={{ color: "#000", marginLeft: 10 }}>Every 30 Seconds (for testing purposes only)</Text>
-                </View>
-
-                <Text style={{ color: "#000", marginBottom: 10, marginTop: 30 }}>Other Settings</Text>
-                <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-                    <TouchableOpacity onPress={() => {
-                        setShowAdd();
-                    }} style={{ backgroundColor: primaryColor, borderWidth: 1, marginRight: 0, borderRadius: 5, marginBottom: 10, width: (windowWidth - 40) / 2 }}>
-                        <Text style={{ color: "#fff", padding: 10, }}>Working Hours</Text>
-                    </TouchableOpacity>
-                </View>
-
-
-
-
-                <View style={{ paddingTop: 30, marginBottom: 10 }}>
+                <View style={{ paddingTop: 0, marginBottom: 0 }}>
                     <Text style={{ color: '#fff', marginBottom: 10 }}>Mood</Text>
                     <View style={styles.container1}>
                         <View style={styles.list} >
@@ -326,11 +289,39 @@ function Entries({ navigation, route }) {
 
                 </View>
 
+                <Text style={{ color: "#fff", marginBottom: 10 }}>Time</Text>
+                <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+                    {cates.map((item, i) => <TouchableOpacity key={item.name} onPress={() => {
+                        setSelectCate(item);
+                        setEvery30Seconds(false);
+                    }} style={{ backgroundColor: selectCate == item ? "blue" : primaryColor, marginRight: i % 2 == 0 ? 10 : 0, borderRadius: 5, marginBottom: 10, width: (windowWidth - 40) / 2 }}>
+                        <Text style={{ color: "#fff", padding: 10, }}>{item.name}</Text>
+                    </TouchableOpacity>)}
+                </View>
+
+                <View style={{ flexDirection: "row",marginTop:15 }}>
+                    <TouchableOpacity onPress={() => {
+                        setEvery30Seconds(!every30Seconds);
+                        setSelectCate(null);
+                    }}>
+                        {every30Seconds ? <AntDesign name="checksquareo" size={24} color="#000" /> : <View style={{ width: 20, height: 20, borderColor: "#000", borderWidth: 2 }}></View>}
+                    </TouchableOpacity>
+                    <Text style={{ color: "#000", marginLeft: 10 }}>Every 30 Seconds (for testing purposes only)</Text>
+                </View>
+
+                <Text style={{ color: "#000", marginBottom: 10, marginTop: 30 }}>Other Settings</Text>
+                <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+                    <TouchableOpacity onPress={() => {
+                        setShowAdd();
+                    }} style={{ backgroundColor: primaryColor, borderWidth: 1, marginRight: 0, borderRadius: 5, marginBottom: 30, width: (windowWidth - 40) / 2 }}>
+                        <Text style={{ color: "#fff", padding: 10, }}>Set Working Hours</Text>
+                    </TouchableOpacity>
+                </View>
 
                 <TouchableOpacity onPress={() => {
                     confirm();
-                }} style={{ backgroundColor: primaryColor, alignItems: "center", justifyContent: "center", borderRadius: 5, width: 100, marginLeft: 10, marginTop: 20 }}>
-                    <Text style={{ color: "#fff", backgroundColor: primaryColor, padding: 10 }}>ADD</Text>
+                }} style={{ backgroundColor: primaryColor, alignItems: "center", justifyContent: "center", borderRadius: 5, paddingHorizontal:32, paddingVertical: 2, marginLeft: 0, marginTop: 0 }}>
+                    <Text style={{ color: "#fff", backgroundColor: primaryColor, padding: 10 }}> Set Notification</Text>
                 </TouchableOpacity>
                 {modalVisible &&
                     <TouchableOpacity onPress={() => {
@@ -349,29 +340,29 @@ function Entries({ navigation, route }) {
             </ScrollView>
             <Modal visible={showAdd} fullScreen={true}>
                 <View style={{ backgroundColor: "#fff", marginTop: 100, alignItems: "center" }}>
-                    <Text style={{ color: "#ff0000" }}>please enter the hour and minute for notification</Text>
+                    <Text style={{ color: "#ff0000", fontSize: 16}}>Please enter the hour and minute for notification</Text>
 
 
-                    <Text style={{ marginTop: 20 }}>Wakeup time</Text>
-                    <View style={{ marginTop: 10 }}>
+                    <Text style={{ marginTop: 20 , fontSize: 16,marginBottom:10}}>Wakeup time</Text>
+                    {/* <View style={{ marginTop: 10 }}>
                         <Button onPress={() => {
                             setShowWakeupTime(true);
                         }} title={wakeupTime ? moment(wakeupTime).format("HH:mm") : 'Select'}></Button>
-                    </View>
+                    </View> */}
                     {showWakeupTime ? <DateTimePicker value={wakeupTime} mode="time" onChange={(v) => {
                         setWakeupTime(new Date(v.nativeEvent.timestamp));
-                        setShowWakeupTime(false);
+                       // setShowWakeupTime(false);
                     }} /> : <></>}
 
-                    <Text style={{ marginTop: 50 }}>Sleep time</Text>
-                    <View style={{ marginTop: 10 }}>
+                    <Text style={{ marginTop: 50 ,fontSize: 16,marginBottom:10}}>Sleep time</Text>
+                    {/* <View style={{ marginTop: 10 }}>
                         <Button onPress={() => {
                             setShowSleepTime(true);
                         }} title={sleepTime ? moment(sleepTime).format("HH:mm") : 'Select'}></Button>
-                    </View>
+                    </View> */}
                     {showSleepTime ? <DateTimePicker value={sleepTime} mode="time" onChange={(v) => {
                         setSleepTime(new Date(v.nativeEvent.timestamp));
-                        setShowSleepTime(false);
+                       // setShowSleepTime(false);
                     }} /> : <></>}
                     <TouchableOpacity onPress={() => {
                         add();
@@ -396,7 +387,7 @@ function Entries({ navigation, route }) {
 const styles = StyleSheet.create({
     container: {
         paddingHorizontal: 15,
-        paddingTop: 24,
+        paddingTop: 15,
         paddingBottom: 10,
         backgroundColor: "#fff",
         flex: 1,

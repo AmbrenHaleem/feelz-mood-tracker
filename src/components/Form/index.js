@@ -56,9 +56,6 @@ export default function Form() {
         setTags(updatedTags);
       };
     
-  
-
-
     const handleDetailChange = (value) => {
         setDetail(value);
     }
@@ -75,6 +72,7 @@ export default function Form() {
         setContactList([]);
         setDetail('')
         setErrorMessages([]);
+        setTags([]);
     }
     
     const handleAddMoodButtonPress = async () => {
@@ -104,11 +102,12 @@ export default function Form() {
                     activity: selectedActivity,
                     contact: selectedContact,
                     detail: detail,
-                    moodDatetime: format(new Date(),'iii LLL dd, yyyy h:mma')
+                    moodDatetime: format(new Date(),'iii LLL dd, yyyy h:mma'),
+                    tags: tags.join(',')
                 }
-
+                console.log("New Mood Data : ", data);
                 setSavingData(true);
-                const newMoodEntry = await localDB.addMood(data.mood,data.activity,data.contact,data.detail,data.moodDatetime);
+                const newMoodEntry = await localDB.addMood(data.mood,data.activity,data.contact,data.detail,data.moodDatetime, data.tags);
                 setSavingData(false);
                 const newMoods = [
                     newMoodEntry,
@@ -126,6 +125,7 @@ export default function Form() {
                     setContactList([]);
                     setDetail('')
                     setErrorMessages([]);
+                    setTags([]);
                     Keyboard.dismiss();
                     navigation.goBack();
                 }

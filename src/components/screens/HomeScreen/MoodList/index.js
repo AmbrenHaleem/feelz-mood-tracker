@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
 export default function MoodList( {moods, navigation, route}) {
-//console.log("Moods : ", moods);
+console.log("Moods : ", moods);
 
     
     const handleAddMoodPress = () => {
