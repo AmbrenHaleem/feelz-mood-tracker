@@ -54,19 +54,17 @@ const HomeScreen = ({ navigation, route}) => {
   const handleEditWakingHours = () => {
     setShowWakingHoursDialog(true);
   };
-<<<<<<< Updated upstream
+
   const moodData = useSelector(
     (state) => {
         return state.mood.moods;
     });
-  
-=======
 
   const handleCancel = () => {
     setShowWakingHoursDialog(false);
   };
 
->>>>>>> Stashed changes
+
   return (
     <View style={{ flex:1, paddingTop: 10, paddingRight:10, paddingLeft: 10, paddingBottom: 10}}>
       {showWakingHoursDialog ? (
