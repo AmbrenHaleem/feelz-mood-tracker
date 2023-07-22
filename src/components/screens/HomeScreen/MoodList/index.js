@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Pressable } from 'react-native';
-import MoodItem from './MoodItem';
+import MoodItem from './ActivityItem';
 import styles from './styles';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';

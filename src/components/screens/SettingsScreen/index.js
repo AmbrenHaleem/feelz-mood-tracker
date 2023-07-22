@@ -344,25 +344,25 @@ function Entries({ navigation, route }) {
 
 
                     <Text style={{ marginTop: 20 , fontSize: 16,marginBottom:10}}>Wakeup time</Text>
-                    {/* <View style={{ marginTop: 10 }}>
+                    <View style={{ marginTop: 10 }}>
                         <Button onPress={() => {
                             setShowWakeupTime(true);
                         }} title={wakeupTime ? moment(wakeupTime).format("HH:mm") : 'Select'}></Button>
-                    </View> */}
+                    </View>
                     {showWakeupTime ? <DateTimePicker value={wakeupTime} mode="time" onChange={(v) => {
                         setWakeupTime(new Date(v.nativeEvent.timestamp));
-                       // setShowWakeupTime(false);
+                       setShowWakeupTime(false);
                     }} /> : <></>}
 
                     <Text style={{ marginTop: 50 ,fontSize: 16,marginBottom:10}}>Sleep time</Text>
-                    {/* <View style={{ marginTop: 10 }}>
+                    <View style={{ marginTop: 10 }}>
                         <Button onPress={() => {
                             setShowSleepTime(true);
                         }} title={sleepTime ? moment(sleepTime).format("HH:mm") : 'Select'}></Button>
-                    </View> */}
+                    </View>
                     {showSleepTime ? <DateTimePicker value={sleepTime} mode="time" onChange={(v) => {
                         setSleepTime(new Date(v.nativeEvent.timestamp));
-                       // setShowSleepTime(false);
+                       setShowSleepTime(false);
                     }} /> : <></>}
                     <TouchableOpacity onPress={() => {
                         add();

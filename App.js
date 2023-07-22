@@ -66,7 +66,8 @@ export default function App() {
             backgroundColor: primaryColor
           },
           tabBarShowLabel: true,
-          tabBarLabelPosition: 'below-icon'
+          tabBarLabelPosition: 'below-icon',
+          tabBarStyle:{paddingBottom:10,paddingTop:10,height:60}
         }}>
           <Tab.Screen name='HomeScreen' 
           // component={HomeScreen} 

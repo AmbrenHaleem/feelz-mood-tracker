@@ -17,27 +17,68 @@ const HomeScreen = ({ navigation, route}) => {
   //const [moods, setWakingHours] = useState('');
   const dispatch = useDispatch();
   
-  useEffect(() => {
-    // Check if the waking hours have been set before
-    AsyncStorage.getItem('wakingHours')
-      .then(storedWakingHours => {
+  // useEffect(() => {
+  //   // Check if the waking hours have been set before
+  //   AsyncStorage.getItem('wakingHours')
+  //     .then(storedWakingHours => {
         
-        if (!storedWakingHours) {
-          setShowWakingHoursDialog(true);
-        } else {
-          setWakingHours(storedWakingHours);
-        }
-      })
-      .catch(error => {
-        console.error('Error retrieving waking hours:', error);
-      });
+  //       if (!storedWakingHours) {
+  //         setShowWakingHoursDialog(true);
+  //       } else {
+  //         setWakingHours(storedWakingHours);
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.error('Error retrieving waking hours:', error);
+  //     });
 
-      (async () => {
-        const data = await database.readMood();
-        dispatch(loadMoods(data));
-       // SplashScreen.hideAsync();
+  //     // (async () => {
+  //     //   const data = await database.readMood();
+  //     //   dispatch(loadMoods(data));
+  //     //  // SplashScreen.hideAsync();
   
-      })();
+  //     // })();
+      
+  // }, []);
+
+
+
+  useEffect(() => {
+        // Check if the waking hours have been set before
+    AsyncStorage.getItem('wakingHours')
+    .then(storedWakingHours => {
+      
+      if (!storedWakingHours) {
+        setShowWakingHoursDialog(true);
+      } else {
+        setWakingHours(storedWakingHours);
+      }
+    })
+    .catch(error => {
+      console.error('Error retrieving waking hours:', error);
+    });
+    // initialize the database
+    (async () => {
+        try {
+            await database.init();
+           
+            // await localDB.removeAll('Activities');
+            // await localDB.removeAll('Moodtype');
+            // await localDB.removeAll('Mood');
+            //await localDB.destroy('Activities');
+            // await localDB.destroy('Moodtype');
+            // await localDB.destroy('Mood');
+            //console.log('DB Success!');
+
+            // load activities from the local db
+            const data = await database.readMood();
+            dispatch(loadMoods(data));
+           
+        }
+        catch (error) {
+            console.log('DB Error:', error);
+        }
+    })();
   }, []);
 
   const handleSaveWakingHours = hours => {

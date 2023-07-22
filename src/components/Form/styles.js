@@ -32,13 +32,14 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         alignSelf: 'stretch',
         paddingBottom: 20,
+        justifyContent:'center'
     },
     list:{
         flex:8,
         backgroundColor: '#f2f2f2',
         borderRadius: 10,
         zIndex: 50,
-        position: 'fixed'
+       // position: 'fixed'
     },
     button:{
         flex:1,
@@ -74,18 +75,21 @@ const styles = StyleSheet.create({
   detailTextbox:{
     borderWidth: 1,
     borderColor: '#747474',
-    paddingTop: 9,
+    //marginTop: 200,
+    marginHorizontal:0,
     paddingHorizontal: 14,
+    paddingVertical: 4,
     fontSize: 16,
     borderRadius: 10,
     flex: 1,
     height:80,
-    textAlignVertical:'top'},
+    textAlignVertical:'top'
+  },
   tagTextbox:{
     borderWidth: 1,
     borderColor: '#747474',
     //paddingTop: 2,
-    paddingHorizontal: 14,
+    paddingHorizontal: 8,
     fontSize: 16,
     borderRadius: 10,
     flex: 3,
@@ -96,14 +100,15 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         alignSelf: 'stretch',
         paddingTop: 20,
+       // marginHorizontal: 20
   },
   button: {
     container: {
       alignItems: 'center',
       justifyContent: 'center',
       paddingVertical: 12,
-      paddingHorizontal: 32,
-      borderRadius: 4,
+      marginHorizontal: 10,
+      borderRadius: 7,
       elevation: 3,
       backgroundColor: primaryColor,
       marginTop : 20
@@ -120,10 +125,11 @@ const styles = StyleSheet.create({
     container: {
       backgroundColor: '#f2f2f2',
       padding: 10,
-      marginBottom: 30,
+      marginVertical: 10,
       borderColor: '#c00',
       borderWidth: 1,
-      borderLeftWidth: 8
+      borderLeftWidth: 8,
+      marginHorizontal:12
     },
     label: {
       color: '#c00',
@@ -170,7 +176,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    height: 60
+    height: 56,
+   // paddingHorizontal:30
   },
   tag: {
     backgroundColor: '#e0e0e0',

@@ -152,7 +152,7 @@ export default function Form() {
         // initialize the database
         (async () => {
             try {
-                await localDB.init();
+               // await localDB.init();
                
                 // await localDB.removeAll('Activities');
                 // await localDB.removeAll('Moodtype');
@@ -223,8 +223,7 @@ export default function Form() {
 
     return (
         <ScrollView >
-            <View style={styles.container}>
-            {errorMessages.length > 0 && (
+             {errorMessages.length > 0 && (
                     <View style={styles.errorMessage.container}>
                         <Text style={styles.errorMessage.label}> Invalid Data:</Text>
                         {errorMessages.map((message, index) => (
@@ -235,10 +234,12 @@ export default function Form() {
                         )}
                     </View>
                 )}
-
+            <View style={styles.container}>
                 <Text style={styles.dateTimeLabel}>{format(new Date(),'iii LLL dd, yyyy h:mma')}</Text>
 
-                <View style={styles.selectlist.container}>
+                <View style={[styles.selectlist.container,
+                    //  {position :'absolute', paddingTop:65, paddingLeft:40, zIndex:3}
+                     ]}>
                     <View style={styles.selectlist.list} >
                         <SelectList placeholder='Select Mood'
                             setSelected={(val) => setSelectedMood(val)}
@@ -252,7 +253,9 @@ export default function Form() {
                     </Pressable>
                 </View>
 
-                <View style={styles.selectlist.container}>
+                <View style={[styles.selectlist.container, 
+                    // {position :'absolute', paddingTop:130, paddingLeft:40, zIndex:2}
+                    ]}>
                     <View style={styles.selectlist.list} >
                         <SelectList placeholder='Select Activity'
                             setSelected={(val) => setSelectedActivity(val)}
@@ -265,16 +268,18 @@ export default function Form() {
                         <Text style={styles.button.text}>+</Text>
                     </Pressable>
                 </View>
-                <View style={styles.selectlist.container}>
-                <View style={styles.selectlist.list} >
-                    <SelectList placeholder='Select Contact'
-                            setSelected={(val) => setSelectedContact(val)}
-                            data={contactList}
-                            save="value"
-                            maxHeight = '120'   
-                    />
+                <View style={[styles.selectlist.container, 
+                    // {position :'absolute', paddingTop:195, paddingLeft:40, zIndex:1}
+                    ]}>
+                    <View style={styles.selectlist.list} >
+                        <SelectList placeholder='Select Contact'
+                                setSelected={(val) => setSelectedContact(val)}
+                                data={contactList}
+                                save="value"
+                                maxHeight = '120'   
+                        />
+                    </View>
                 </View>
-            </View>
 
                 {/* <Text style={styles.label}>Description:</Text> */}
                 <TextInput
@@ -296,10 +301,11 @@ export default function Form() {
                             />
                             {/* <Button  title="Add Tag" onPress={handleAddTag} color={styles.primaryColor} /> */}
 
-                        <Pressable style={styles.selectlist.button} onPress={handleAddTag}>
-                            <Text style={styles.button.text}>Add Tag</Text>
-                        </Pressable>
+                            <Pressable style={styles.selectlist.button} onPress={handleAddTag}>
+                                <Text style={styles.button.text}>Add Tag</Text>
+                            </Pressable>
                         </View>
+
                         <ScrollView horizontal>
                             <View style={styles.tagsContainer}>
                                 {tags.map((item, index) => (

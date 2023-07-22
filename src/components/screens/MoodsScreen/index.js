@@ -5,7 +5,8 @@ import  AddActivity  from './AddActivity/index';
 import  AddMoodType  from './AddMoodType/index';
 const Stack = createNativeStackNavigator();
 
-export default function MoodsScreen({navigation}) {
+export default function MoodsScreen({navigation,route}) {
+  console.log('navigation',navigation);
     return (
     <Stack.Navigator>
       <Stack.Screen name="AddMood" options={{ headerShown: false}} >
