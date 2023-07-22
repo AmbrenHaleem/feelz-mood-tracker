@@ -378,7 +378,7 @@ export function readMood() {
                                 contact: row.contact,
                                 detail: row.detail,
                                 moodDatetime: row.moodDatetime,
-                                tag: row.tags
+                                tags: row.tags
                             }
                             moods.push(mood);
                             //console.log('Activity:',activity);
