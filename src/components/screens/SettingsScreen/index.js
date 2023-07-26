@@ -15,7 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-function Entries({ navigation, route }) {
+function Entries({ navigation, route,setIsLocked }) {
     const [title, setTitle] = useState("");
     const [showAdd, setShowAdd] = useState(false);
     const [showTimed, setShowTimed] = useState(false);
@@ -70,7 +70,24 @@ function Entries({ navigation, route }) {
 
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [searchKey, setSearchKey] = useState('');
-
+    const handleLockPress = () => {
+        Alert.alert(
+            "Confirm Lock",
+            "Are you sure you want to lock the app?",
+            [
+                {
+                    text: "Cancel", 
+                    style: "cancel", 
+                },
+                {
+                    text: "Lock", 
+                    onPress: () => {
+                        setIsLocked(true);
+                    },
+                },
+            ]
+        );
+    };
 
     const activityData = useSelector(
         (state) => {
@@ -313,8 +330,13 @@ function Entries({ navigation, route }) {
                 <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
                     <TouchableOpacity onPress={() => {
                         setShowAdd();
-                    }} style={{ backgroundColor: primaryColor, borderWidth: 1, marginRight: 0, borderRadius: 5, marginBottom: 30, width: (windowWidth - 40) / 2 }}>
+                    }} style={{ backgroundColor: primaryColor, borderRadius: 5, width: (windowWidth - 40) / 2, marginBottom: 30  }}>
                         <Text style={{ color: "#fff", padding: 10, }}>Set Working Hours</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => {
+                        handleLockPress();
+                    }} style={{ backgroundColor: primaryColor, borderWidth: 1, marginRight: 0, borderRadius: 5,  width: (windowWidth - 40) / 2, marginLeft:10, marginBottom: 30 }}>
+                        <Text style={{ color: "#fff", padding: 10,display:'flex',justifyContent:'center' }}>Locked</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -323,6 +345,11 @@ function Entries({ navigation, route }) {
                 }} style={{ backgroundColor: primaryColor, alignItems: "center", justifyContent: "center", borderRadius: 5, paddingHorizontal:32, paddingVertical: 2, marginLeft: 0, marginTop: 0 }}>
                     <Text style={{ color: "#fff", backgroundColor: primaryColor, padding: 10 }}> Set Notification</Text>
                 </TouchableOpacity>
+                {/* <TouchableOpacity onPress={() => {
+                   handleLockPress()
+                }} style={{ backgroundColor: primaryColor, alignItems: "center", justifyContent: "center", borderRadius: 5, paddingHorizontal:32, paddingVertical: 2, marginLeft: 0, marginTop: 10 }}>
+                    <Text style={{ color: "#fff", backgroundColor: primaryColor, padding: 10 }}> Locked</Text>
+                </TouchableOpacity> */}
                 {modalVisible &&
                     <TouchableOpacity onPress={() => {
                         setModalVisible(false);
@@ -380,6 +407,7 @@ function Entries({ navigation, route }) {
                     </TouchableOpacity>
                 </View>
             </Modal>
+            
         </View>
     );
 }
