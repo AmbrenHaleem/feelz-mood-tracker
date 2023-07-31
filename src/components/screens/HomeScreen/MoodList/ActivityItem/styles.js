@@ -7,27 +7,27 @@ const styles = StyleSheet.create({
         backgroundColor:'#e8f7ff',
        // backgroundColor: "#FEDFF6",
         marginTop: 10,
-        marginHorizontal:3,
+        marginHorizontal:10,
         borderWidth:1,
         borderColor: 'rgba(0,0,0,0.2)',
-        padding:10,
+        padding:0,
         flexDirection:'column',
         justifyContent: 'space-between',
         borderRadius:10
     },
     title: {
-        fontSize: 17,
+        fontSize: 18,
         fontWeight: 'bold',
         color: primaryColor,
         marginTop:10
     },
     description:{
-        fontSize:14,
+        fontSize:16,
         color: greyColor,
         maxHeight:36
     },
     mood:{
-        fontSize:14,
+        fontSize:16,
         fontWeight:'bold',
         color: greyColor,
         maxHeight:36,
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     switchText: {
-        fontSize: 14,
+        fontSize: 16,
         opacity: 0.5,
         marginLeft:5
     },

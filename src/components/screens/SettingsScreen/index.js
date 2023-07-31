@@ -211,7 +211,7 @@ function Entries({ navigation, route,setIsLocked }) {
                 if (item?.isEvery30 && every30SecondsRef.current) {
                     setNoti(item);
                     setModalVisible(true)
-                    console.log('debug2---');
+                   // console.log('debug2---');
                     return;
                 }
                 let dis = Math.floor((moment().valueOf() - item.time) / 1000);
@@ -219,7 +219,7 @@ function Entries({ navigation, route,setIsLocked }) {
                 if ((leave <= 60 && dis / item.value >= 1) || every30SecondsRef.current) {
                     setNoti(item);
                     setModalVisible(true)
-                    console.log('debug---');
+                   // console.log('debug---');
                 }
             })
         }, 30 * 1000);

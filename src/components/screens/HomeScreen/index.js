@@ -108,26 +108,26 @@ const HomeScreen = ({ navigation, route}) => {
 
   return (
     <View style={{ flex:1, paddingTop: 10, paddingRight:10, paddingLeft: 10, paddingBottom: 10}}>
-      {showWakingHoursDialog ? (
+      {/* {showWakingHoursDialog ? (
         <WakingHoursDialog onSave={handleSaveWakingHours} onCancel={handleCancel} />
       ) : (
         <View style={{flex:1,flexDirection:'row', justifyContent:'space-between',alignItems:'stretch'}}>
-          {/* <Text>Welcome to our App</Text> */}
+          
           <Text style={{paddingHorizontal:10,paddingTop:12,fontSize:15}} >Waking Hours: {wakingHours}</Text>
-          {/* <Button titleStyle={{fontSize:12}} title="Change Waking Hours" onPress={handleEditWakingHours} /> */}
+          
           <Pressable style={{paddingHorizontal:10,paddingTop:12,fontSize:15}} onPress={handleEditWakingHours}>
                     <Text style={{fontSize:15, color: primaryColor, fontWeight:'bold'}}>Change Waking Hours</Text>
           </Pressable>
         </View>
-      )}
-       <View style={{flex:14,flexDirection:'column', justifyContent:'flex-start',alignItems:'stretch'}}>
+      )} */}
+       {/* <View style={{flex:14,flexDirection:'column', justifyContent:'flex-start',alignItems:'stretch'}}> */}
           
           
               <MoodInfo moodData={moodData}/>
          
           <MoodList moods={moodData} navigation={navigation}/>
         </View>
-    </View>
+    // </View>
   );
 };
 

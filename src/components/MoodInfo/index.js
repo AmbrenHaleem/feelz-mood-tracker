@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView, StyleSheet, Button, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 import moment from "moment";
 import { AntDesign } from '@expo/vector-icons';
 import { primaryColor } from "../../includes/variable";
 import { Entypo } from '@expo/vector-icons';
+import { Title, Paragraph, Card, Button, TextInput } from 'react-native-paper';
 
 const styles = StyleSheet.create({
   container: {
@@ -33,6 +34,10 @@ const styles = StyleSheet.create({
   },
   percentageText: {
     marginLeft: 10,
+  },
+  SummaryContainer: {
+    maxHeight: 300,
+    padding:0
   },
 });
 
@@ -139,8 +144,12 @@ export default function MoodInfo({ moodData }) {
   };
 
   return (
-    <View style={{backgroundColor:'#fff3c9',paddingTop:10,borderRadius:20,borderWidth:1,
-    borderColor: 'rgba(0,0,0,0.2)',}}>
+    <Card style={{margin:10, backgroundColor:'#fff3c9', maxHeight:230}}>
+        <Card.Content>
+        <ScrollView style={styles.SummaryContainer}>
+          {/* <Title>Add ToDo Here</Title> */}
+    {/* <View style={{backgroundColor:'#fff3c9',paddingTop:10,borderRadius:20,borderWidth:1,
+    borderColor: 'rgba(0,0,0,0.2)',}}> */}
       <View style={{display:"flex",flexDirection:'row',justifyContent:"center",alignItems:"center",marginBottom:20}}>
       <Text style={{color:primaryColor,fontSize:28}}>Your Summary</Text>
       <View style={{paddingHorizontal:4}}>
@@ -185,6 +194,10 @@ export default function MoodInfo({ moodData }) {
       </View>
 
       {renderAnalysisList()}
-    </View>
+    {/* </View> */}
+    </ScrollView>
+    </Card.Content>
+    </Card>
+    
   );
 }

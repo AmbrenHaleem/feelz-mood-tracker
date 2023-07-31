@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import styles from './styles';
 import * as database from '../../../../../database/localdb';
 import { useState } from 'react';
+import {  Card } from 'react-native-paper';
 
 export default function MoodItem({id, mood, activity, contact, detail, moodDatetime,tags}) {
    
@@ -47,21 +48,24 @@ const allowDelete = false;
   }
     return (
         <>
+        <Card style={styles.card}>
+        <Card.Content style={styles.textContainer}>
         <Pressable onPress={handleModalToggle}>
-        <View style={styles.card} >
-            <View style={styles.textContainer}>
+        {/* <View style={styles.card} >
+            <View style={styles.textContainer}> */}
                 <View>
                     <Text style={styles.title}>{moodDatetime}</Text>
                     <Text style={styles.mood}> Feeling {mood}  </Text>
                     <Text style={styles.description}> {activity} - {detail} </Text>
                     
                 </View>
-            </View>
+            {/* </View>
 
-        </View>
+        </View> */}
         </Pressable>
 
         <Modal visible={showModal} transparent={true}>
+          
         <View style={styles.modal.container}>
           <View style={styles.modal.box}>
 
@@ -69,7 +73,7 @@ const allowDelete = false;
             <Pressable onPress={handleModalToggle}>
               <View style={styles.close.container}>
                 <AntDesign name="closesquare" size={25} color="#c00" />
-                <Text style={styles.close.text}>Close</Text>
+                {/* <Text style={styles.close.text}>Close</Text> */}
               </View>
             </Pressable>
 
@@ -79,7 +83,7 @@ const allowDelete = false;
             <Text style={styles.text}>Activity: {activity} - {detail}</Text>
             <Text style={styles.text}>Detail: {detail}</Text>
             <Text style={styles.text}>Contact : {contact == '' ? 'None' : contact } </Text>
-            <Text style={styles.text}>Tags: {tags == '' ? 'None' : tags } </Text>
+            <Text style={styles.text}>Tags: {(tags||'') == '' ? 'None' : tags } </Text>
               {/* Remove Button */}
               {allowDelete && (
                 <View style={styles.remove.container}>
@@ -93,6 +97,8 @@ const allowDelete = false;
           </View>
         
       </Modal>
+      </Card.Content>
+      </Card>
         </>
     )
 }

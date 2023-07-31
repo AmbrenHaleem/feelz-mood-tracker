@@ -3,7 +3,7 @@ import { secondaryColor } from '../includes/variable';
 
 const styles = StyleSheet.create({
     containter: {
-        paddingTop: Platform.OS === 'ios' ? 55:25,
+        paddingTop: Platform.OS === 'ios' ? 55:35,
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start',

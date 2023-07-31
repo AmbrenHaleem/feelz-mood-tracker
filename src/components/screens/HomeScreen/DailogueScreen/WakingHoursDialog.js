@@ -1,62 +1,132 @@
-import React, { useState } from 'react';
-import { Alert, View, Text, TextInput, Button, StyleSheet, Modal, Dimensions } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import React, { useState , useEffect} from 'react';
+import { View, Text, Button, StyleSheet, Modal, Dimensions, Platform } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import * as Notifications from 'expo-notifications';
+
 const WakingHoursDialog = ({ onSave, onCancel }) => {
+  const [wakingHours, setWakingHours] = useState(new Date());
+  const [showTimePicker, setShowTimePicker] = useState(false);
 
-  const [wakingHours, setWakingHours] = useState('');
-  const [selectedAmPm, setSelectedAmPm] = useState('AM');
 
-  const handleSave = () => {
-    if (!isValidTimeFormat(wakingHours)) {
-      Alert.alert('Invalid Input', 'Please enter waking hours in the format "1:00" to "12:59"');
+
+  useEffect(() => {
+    // Request permissions for notifications
+    registerForPushNotificationsAsync();
+
+    // Listener for handling incoming notifications while the app is in the foreground
+    const foregroundNotificationListener = Notifications.addNotificationReceivedListener(handleForegroundNotification);
+
+    return () => {
+      // Clean up the listener
+      foregroundNotificationListener.remove();
+    };
+  }, []);
+
+  const handleForegroundNotification = (notification) => {
+    // Handle incoming notifications while the app is in the foreground
+    console.log('Received foreground notification:', notification);
+  };
+
+  const registerForPushNotificationsAsync = async () => {
+    // Request permissions for notifications
+    const { status } = await Notifications.requestPermissionsAsync();
+
+    if (status !== 'granted') {
+      // Permissions not granted, handle accordingly
+      console.log('Notification permissions not granted!');
       return;
     }
 
-    onSave(wakingHours + ' ' + selectedAmPm);
+    // Get the device's push notification token
+    const { data: { data } } = await Notifications.getExpoPushTokenAsync({
+      projectId: '@AmbrenHaleem/feelz-mood-tracker',
+    });
+
+    // Save the token to your server/database for sending push notifications
+    console.log('Expo push token:', data);
   };
 
-  const isValidTimeFormat = (time) => {
-    const pattern = /^(0?[1-9]|1[0-2]):[0-5][0-9]$/;
-    return pattern.test(time);
+
+
+  const scheduleLocalNotification = async (alarmTime) => {
+    // Schedule a local notification using expo-notifications
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: 'Wake Up!',
+        body: 'It is time to wake up!',
+      },
+      trigger: {
+        hour: alarmTime.getHours(),
+        minute: alarmTime.getMinutes(),
+        repeats: false,
+      },
+    });
   };
 
+
+
+  const handleSave = async () => {
+    const alarmTime = new Date();
+    alarmTime.setHours(wakingHours.getHours());
+    alarmTime.setMinutes(wakingHours.getMinutes());
+
+    // Schedule a local notification
+    await scheduleLocalNotification(alarmTime);
+
+    onSave(formatTime(wakingHours));
+  };
+
+  const formatTime = (time) => {
+    let hours = time.getHours();
+    let period = hours < 12 ? 'AM' : 'PM';
+    hours = hours % 12 || 12; 
+    const minutes = time.getMinutes();
+    return `${hours}:${minutes < 10 ? '0' : ''}${minutes} ${period}`;
+  };
+  
+
+  const showPicker = () => {
+    setShowTimePicker(true);
+  };
+
+  const handleTimeChange = (event, selectedTime) => {
+    if (selectedTime) {
+      setWakingHours(selectedTime);
+    }
+  };
+
+ const handleClose = () => {
+  onCancel(); 
+};
 
   return (
     <View>
-        <Modal visible= {true} animationType="slide">
-            <View style={styles.modalContainer}>
-
-            <View style={styles.contentContainer}>
+      <Modal visible={true} animationType="slide">
+        <View style={styles.modalContainer}>
+          <View style={styles.contentContainer}>
             <Text style={styles.title}>Please define your waking hours:</Text>
             <View style={styles.timeInputContainer}>
-            <TextInput
-              value={wakingHours}
-              onChangeText={setWakingHours}
-              placeholder="e.g. 5:30"
-              style={styles.input}
-              keyboardType="default"
-              maxLength={5} 
-            />
-            <Picker
-              selectedValue={selectedAmPm}
-              style={styles.picker}
-              onValueChange={(itemValue) => setSelectedAmPm(itemValue)}
-            >
-              <Picker.Item label="AM" value="AM" />
-              <Picker.Item label="PM" value="PM" />
-            </Picker>
+              <Button title={formatTime(wakingHours)} onPress={showPicker} />
+              {showTimePicker && (
+                <DateTimePicker
+                  value={wakingHours}
+                  mode="time"
+                  display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                  onChange={handleTimeChange}
+                  minuteInterval={1}
+                />
+              )}
+            </View>
+            <View style={styles.buttonContainer}>
+              <Button title="Cancel" onPress={handleClose} color="#FF0000" />
+              <Button title="Save" onPress={handleSave} />
+            </View>
           </View>
-            <Button style={styles.buttonContainer} title="Save" onPress={handleSave} />
-            </View>
-            
-            </View>
-        </Modal>
-      
-   
+        </View>
+      </Modal>
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   modalContainer: {
@@ -79,21 +149,13 @@ const styles = StyleSheet.create({
   timeInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between', // Added to align TextInput and Picker horizontally
-    marginBottom: 10, // Added to give some space below the time input
+    justifyContent: 'center',
+    marginBottom: 10,
   },
-  input: {
-    flex: 1,
-    height: 40,
-    marginRight: 10, // Added to create space between TextInput and Picker
-    borderColor: '#cccccc',
-    borderWidth: 1,
-    borderRadius: 4,
-    paddingLeft: 10,
-  },
-  picker: {
-    width: 80,
-    height: 40,
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
   },
 });
 

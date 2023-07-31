@@ -51,7 +51,7 @@ export function init() {
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     mood TEXT NOT NULL,
                     activity TEXT NOT NULL,
-                    contact TEXT NOT NULL,
+                    contact TEXT NULL,
                     detail TEXT NOT NULL,
                     moodDatetime TEXT NOT NULL,
                     tags TEXT NOT NULL
